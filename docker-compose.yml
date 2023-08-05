@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+  client:
+    build: ./client
+    stdin_open: true
+    tty: true
+    # command: npm run dev
+    environment:
+      VITE_BACKEND_URL: http://localhost:8080
+    volumes:
+      - ./client:/app
+    ports:
+      - 5173:5173
+  # db:
+  #   image: mysql:8.0
+  #   environment:
+  #     MYSQL_DATABASE: go_react_practice_db
+  #     MYSQL_ROOT_USER: root
+  #     MYSQL_ROOT_PASSWORD: password
+  #     TZ: "Asia/Tokyo"
+  #   volumes:
+  #     - mysql_data:/var/lib/mysql
+  #   ports:
+  #     - 3306:3306
+  server:
+    build:
+      context: ./server
+    ports:
+      - "8080:8080"
+    tty: true
+    stdin_open: true
+    # command: go run main.go
+    volumes:
+      - ./server:/go/src
+    environment:
+      TZ: Asia/Tokyo
+    depends_on:
+      - db
+# volumes:
+#   mysql_data:
