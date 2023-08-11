@@ -1,1 +1,1 @@
-# go-react-practice
+# organization-management-system

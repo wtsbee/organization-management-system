@@ -5,7 +5,7 @@ services:
     build: ./client
     stdin_open: true
     tty: true
-    # command: npm run dev
+    command: npm run dev
     environment:
       VITE_BACKEND_URL: http://localhost:8080
     volumes:
@@ -15,7 +15,7 @@ services:
   # db:
   #   image: mysql:8.0
   #   environment:
-  #     MYSQL_DATABASE: go_react_practice_db
+  #     MYSQL_DATABASE: organization_management_system_db
   #     MYSQL_ROOT_USER: root
   #     MYSQL_ROOT_PASSWORD: password
   #     TZ: "Asia/Tokyo"

@@ -1,36 +1,26 @@
-import "./App.css";
-import axios from "axios";
+import { Route, Routes } from "react-router-dom";
+import Header from "@/components/header/Header";
+import SideMenu from "@/components/sideMenu/SideMenu";
+import DepartmentManagement from "@/pages/DepartmentManagement";
+import ApiTest from "@/pages/ApiTest";
+import VersionManagement from "@/pages/VersionManagement";
+import OrganizationChart from "./pages/OrganizationChart";
+import EmployeeManagement from "./pages/EmployeeManagement";
 
 function App() {
-  const onHandle = async () => {
-    console.log("aaa");
-
-    const res = await axios({
-      method: "post",
-      url: `${import.meta.env.VITE_BACKEND_URL}/query`,
-      data: {
-        query: `
-          query {
-            todos {
-              id
-              text
-              done
-              user {
-                name
-              }
-            }
-          }
-        `,
-      },
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    console.log(res.data);
-  };
   return (
     <>
-      <button onClick={() => onHandle()}>API実行</button>
+      <Header />
+      <SideMenu />
+      <div className="main px-10 py-5">
+        <Routes>
+          <Route path="/" element={<VersionManagement />} />
+          <Route path="/department" element={<DepartmentManagement />} />
+          <Route path="/employee" element={<EmployeeManagement />} />
+          <Route path="/orgchart" element={<OrganizationChart />} />
+          <Route path="/test" element={<ApiTest />} />
+        </Routes>
+      </div>
     </>
   );
 }
