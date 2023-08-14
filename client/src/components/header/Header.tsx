@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Header = () => {
   return (
     <header className="navbar bg-slate-500">
@@ -17,9 +19,9 @@ const Header = () => {
         </svg>
       </label>
       <div>
-        <a className="btn btn-ghost normal-case text-xl text-white">
+        <Link to="/" className="btn btn-ghost normal-case text-xl text-white">
           組織管理システム
-        </a>
+        </Link>
       </div>
     </header>
   );
