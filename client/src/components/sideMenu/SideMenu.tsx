@@ -1,6 +1,14 @@
 import { Link } from "react-router-dom";
 
 const SideMenu = () => {
+  const menuClick = () => {
+    // クリック時にサイドメニューを閉じる
+    const labelElement = document.getElementById("my-drawer");
+    if (labelElement) {
+      labelElement.click();
+    }
+  };
+
   return (
     <div className="drawer">
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
@@ -8,7 +16,7 @@ const SideMenu = () => {
         <label htmlFor="my-drawer" className="drawer-overlay"></label>
         <ul className="menu p-4 w-50 h-full bg-base-200 text-base-content">
           <li>
-            <Link to="/">
+            <Link to="/" onClick={menuClick}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -27,7 +35,7 @@ const SideMenu = () => {
             </Link>
           </li>
           <li>
-            <Link to="/department">
+            <Link to="/department" onClick={menuClick}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -46,7 +54,7 @@ const SideMenu = () => {
             </Link>
           </li>
           <li>
-            <Link to="/employee">
+            <Link to="/employee" onClick={menuClick}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -65,7 +73,7 @@ const SideMenu = () => {
             </Link>
           </li>
           <li>
-            <Link to="/orgchart">
+            <Link to="/orgchart" onClick={menuClick}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -84,7 +92,9 @@ const SideMenu = () => {
             </Link>
           </li>
           <li>
-            <Link to="/test">APIテスト</Link>
+            <Link to="/test" onClick={menuClick}>
+              APIテスト
+            </Link>
           </li>
         </ul>
       </div>
