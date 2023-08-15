@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"my_package/database"
 	"my_package/graph"
 	"net/http"
 	"os"
@@ -30,6 +31,9 @@ func corsMiddleware(next http.Handler) http.Handler {
 }
 
 func main() {
+	db := database.NewDB()
+	database.Migrate(db)
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort

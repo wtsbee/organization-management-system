@@ -12,17 +12,17 @@ services:
       - ./client:/app
     ports:
       - 5173:5173
-  # db:
-  #   image: mysql:8.0
-  #   environment:
-  #     MYSQL_DATABASE: organization_management_system_db
-  #     MYSQL_ROOT_USER: root
-  #     MYSQL_ROOT_PASSWORD: password
-  #     TZ: "Asia/Tokyo"
-  #   volumes:
-  #     - mysql_data:/var/lib/mysql
-  #   ports:
-  #     - 3306:3306
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: organization_management_system_db
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: password
+      TZ: "Asia/Tokyo"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - 3306:3306
   server:
     build:
       context: ./server
@@ -30,12 +30,12 @@ services:
       - "8080:8080"
     tty: true
     stdin_open: true
-    # command: go run main.go
+    # command: go run server.go
     volumes:
       - ./server:/go/src
     environment:
       TZ: Asia/Tokyo
     depends_on:
       - db
-# volumes:
-#   mysql_data:
+volumes:
+  mysql_data:

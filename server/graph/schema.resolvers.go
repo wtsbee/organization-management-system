@@ -9,17 +9,28 @@ import (
 	"fmt"
 	"math/rand"
 	"my_package/graph/model"
+	"strconv"
 )
 
 // CreateTodo is the resolver for the createTodo field.
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
+	uintUserID, err := strconv.ParseUint(input.UserID, 10, 64)
+	if err != nil {
+		fmt.Println("変換エラー:", err)
+		return &model.Todo{}, err
+	}
 	todo := &model.Todo{
 		Text: input.Text,
-		ID:   fmt.Sprintf("T%d", rand.Int()),
-		User: &model.User{ID: input.UserID, Name: "user " + input.UserID},
+		ID:   uint(rand.Uint64()),
+		User: &model.User{ID: uint(uintUserID), Name: "user " + input.UserID},
 	}
 	r.todos = append(r.todos, todo)
 	return todo, nil
+}
+
+// CreateVersion is the resolver for the createVersion field.
+func (r *mutationResolver) CreateVersion(ctx context.Context, input model.NewVersion) (*model.Version, error) {
+	panic(fmt.Errorf("not implemented: CreateVersion - createVersion"))
 }
 
 // Todos is the resolver for the todos field.

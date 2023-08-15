@@ -2,6 +2,8 @@
 #
 # https://gqlgen.com/getting-started/
 
+scalar DateTime
+
 type Todo {
   id: ID!
   text: String!
@@ -14,6 +16,13 @@ type User {
   name: String!
 }
 
+type Version {
+  id: ID!
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
 type Query {
   todos: [Todo!]!
 }
@@ -23,6 +32,11 @@ input NewTodo {
   userId: String!
 }
 
+input NewVersion {
+  name: String!
+}
+
 type Mutation {
   createTodo(input: NewTodo!): Todo!
+  createVersion(input: NewVersion!): Version!
 }
