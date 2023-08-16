@@ -6,17 +6,26 @@ package graph
 
 import (
 	"context"
-	"fmt"
+	"log"
 	"math/rand"
 	"my_package/graph/model"
+	"my_package/graph/usecase"
 	"strconv"
 )
+
+// コンストラクタ
+func NewResolver(vu usecase.IVersionUsecase) *Resolver {
+	return &Resolver{
+		todos: []*model.Todo{},
+		vu:    vu,
+	}
+}
 
 // CreateTodo is the resolver for the createTodo field.
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
 	uintUserID, err := strconv.ParseUint(input.UserID, 10, 64)
 	if err != nil {
-		fmt.Println("変換エラー:", err)
+		log.Println("graph CreateTodo 変換エラー:", err)
 		return &model.Todo{}, err
 	}
 	todo := &model.Todo{
@@ -30,7 +39,12 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 
 // CreateVersion is the resolver for the createVersion field.
 func (r *mutationResolver) CreateVersion(ctx context.Context, input model.NewVersion) (*model.Version, error) {
-	panic(fmt.Errorf("not implemented: CreateVersion - createVersion"))
+	version, err := r.vu.CreateVersion(input)
+	if err != nil {
+		log.Println("graph CreateVersion バージョン作成エラー: ", err)
+		return &model.Version{}, err
+	}
+	return &version, nil
 }
 
 // Todos is the resolver for the todos field.

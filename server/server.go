@@ -4,8 +4,9 @@ import (
 	"log"
 	"my_package/database"
 	"my_package/graph"
+	"my_package/graph/repository"
+	"my_package/graph/usecase"
 	"net/http"
-	"os"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
@@ -34,12 +35,11 @@ func main() {
 	db := database.NewDB()
 	database.Migrate(db)
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = defaultPort
-	}
+	versionRepository := repository.NewVersionRepository(db)
+	versionUsecase := usecase.NewVersionUsecase(versionRepository)
+	resolver := graph.NewResolver(versionUsecase)
 
-	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
+	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: resolver}))
 
 	// CORS対応のハンドラを追加
 	corsHandler := corsMiddleware(srv)
@@ -47,6 +47,6 @@ func main() {
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", corsHandler)
 
-	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	log.Printf("connect to http://localhost:%s/ for GraphQL playground", defaultPort)
+	log.Fatal(http.ListenAndServe(":"+defaultPort, nil))
 }
