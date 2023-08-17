@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const SideMenu = () => {
   const menuClick = () => {
@@ -16,7 +16,7 @@ const SideMenu = () => {
         <label htmlFor="my-drawer" className="drawer-overlay"></label>
         <ul className="menu p-4 w-50 h-full bg-base-200 text-base-content">
           <li>
-            <Link to="/" onClick={menuClick}>
+            <NavLink to="/" onClick={menuClick}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -32,10 +32,10 @@ const SideMenu = () => {
                 />
               </svg>
               バージョン管理
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to="/department" onClick={menuClick}>
+            <NavLink to="/department" onClick={menuClick}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -51,10 +51,10 @@ const SideMenu = () => {
                 />
               </svg>
               部署管理
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to="/employee" onClick={menuClick}>
+            <NavLink to="/employee" onClick={menuClick}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -70,10 +70,10 @@ const SideMenu = () => {
                 />
               </svg>
               社員管理
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to="/orgchart" onClick={menuClick}>
+            <NavLink to="/orgchart" onClick={menuClick}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -89,12 +89,12 @@ const SideMenu = () => {
                 />
               </svg>
               組織図
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to="/test" onClick={menuClick}>
+            <NavLink to="/test" onClick={menuClick}>
               APIテスト
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </div>
