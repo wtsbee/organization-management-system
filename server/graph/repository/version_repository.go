@@ -9,6 +9,7 @@ import (
 // インターフェース
 type IVersionRepository interface {
 	CreateVersion(version *model.Version) error
+	GetVersions(versions *[]*model.Version) error
 }
 
 type versionRepository struct {
@@ -22,6 +23,14 @@ func NewVersionRepository(db *gorm.DB) IVersionRepository {
 
 func (vr *versionRepository) CreateVersion(version *model.Version) error {
 	if err := vr.db.Create(version).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (vr *versionRepository) GetVersions(versions *[]*model.Version) error {
+	err := vr.db.Find(versions).Error
+	if err != nil {
 		return err
 	}
 	return nil

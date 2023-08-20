@@ -26,6 +26,7 @@ type Version {
 
 type Query {
   todos: [Todo!]!
+  getVersions: [Version!]!
 }
 
 input NewTodo {

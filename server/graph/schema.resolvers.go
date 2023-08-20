@@ -52,6 +52,11 @@ func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
 	return r.todos, nil
 }
 
+// GetVersions is the resolver for the getVersions field.
+func (r *queryResolver) GetVersions(ctx context.Context) ([]*model.Version, error) {
+	return r.vu.GetVersions()
+}
+
 // Mutation returns MutationResolver implementation.
 func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
 
