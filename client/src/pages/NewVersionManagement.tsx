@@ -1,18 +1,27 @@
-import DatePickerCustom from "@/components/common/DatePickerCustom";
 import { useState } from "react";
+import { useMutation } from "@apollo/client";
+import DatePickerCustom from "@/components/common/DatePickerCustom";
+import { CREATE_VERSION } from "@/mutations/versionMutations";
 
 const NewVersionManagement = () => {
-  const [input, setInput] = useState("");
+  const [name, setName] = useState("");
+  const [createVersion] = useMutation(CREATE_VERSION);
   const [date, setDate] = useState<Date | null>();
   const value = { date, setDate };
 
   const editVersionName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(e.target.value);
+    setName(e.target.value);
   };
 
   const onRegister = () => {
-    console.log("登録ボタンクリック");
-    console.log(input, date);
+    createVersion({
+      variables: {
+        input: {
+          name: name,
+          startedAt: date,
+        },
+      },
+    });
   };
   return (
     <>
