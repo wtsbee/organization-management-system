@@ -8,7 +8,7 @@ import (
 
 // インターフェース
 type IVersionUsecase interface {
-	CreateVersion(version model.NewVersion) (model.Version, error)
+	CreateVersion(version model.NewVersion) (*model.Version, error)
 	GetVersions() ([]*model.Version, error)
 }
 
@@ -21,12 +21,14 @@ func NewVersionUsecase(vr repository.IVersionRepository) IVersionUsecase {
 	return &versionUsecase{vr}
 }
 
-func (vu *versionUsecase) CreateVersion(version model.NewVersion) (model.Version, error) {
+func (vu *versionUsecase) CreateVersion(version model.NewVersion) (*model.Version, error) {
 	newVersion := model.Version{Name: version.Name, StartedAt: version.StartedAt}
 	if err := vu.vr.CreateVersion(&newVersion); err != nil {
-		return model.Version{}, err
+		log.Println("CreateVersion error", err)
+		return &model.Version{}, err
 	}
-	return newVersion, nil
+	log.Println("CreateVersion success")
+	return &newVersion, nil
 }
 
 func (vu *versionUsecase) GetVersions() ([]*model.Version, error) {
@@ -35,5 +37,6 @@ func (vu *versionUsecase) GetVersions() ([]*model.Version, error) {
 		log.Println("GetVersions error", err)
 		return nil, err
 	}
+	log.Println("GetVersions success")
 	return versions, nil
 }

@@ -39,12 +39,7 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 
 // CreateVersion is the resolver for the createVersion field.
 func (r *mutationResolver) CreateVersion(ctx context.Context, input model.NewVersion) (*model.Version, error) {
-	version, err := r.vu.CreateVersion(input)
-	if err != nil {
-		log.Println("graph CreateVersion バージョン作成エラー: ", err)
-		return &model.Version{}, err
-	}
-	return &version, nil
+	return r.vu.CreateVersion(input)
 }
 
 // Todos is the resolver for the todos field.
