@@ -20,7 +20,7 @@ func NewVersionUsecase(vr repository.IVersionRepository) IVersionUsecase {
 }
 
 func (vu *versionUsecase) CreateVersion(version model.NewVersion) (model.Version, error) {
-	newVersion := model.Version{Name: version.Name}
+	newVersion := model.Version{Name: version.Name, StartedAt: version.StartedAt}
 	if err := vu.vr.CreateVersion(&newVersion); err != nil {
 		return model.Version{}, err
 	}

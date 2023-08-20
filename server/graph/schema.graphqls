@@ -19,6 +19,7 @@ type User {
 type Version {
   id: ID!
   name: String!
+  startedAt: DateTime!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -34,6 +35,7 @@ input NewTodo {
 
 input NewVersion {
   name: String!
+  startedAt: DateTime!
 }
 
 type Mutation {

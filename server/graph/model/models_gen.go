@@ -2,13 +2,18 @@
 
 package model
 
+import (
+	"time"
+)
+
 type NewTodo struct {
 	Text   string `json:"text"`
 	UserID string `json:"userId"`
 }
 
 type NewVersion struct {
-	Name string `json:"name"`
+	Name      string    `json:"name"`
+	StartedAt time.Time `json:"startedAt"`
 }
 
 type Todo struct {
