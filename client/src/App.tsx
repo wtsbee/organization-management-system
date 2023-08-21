@@ -5,7 +5,7 @@ import SideMenu from "@/components/sideMenu/SideMenu";
 import DepartmentManagement from "@/pages/DepartmentManagement";
 import ApiTest from "@/pages/ApiTest";
 import VersionManagement from "@/pages/VersionManagement";
-import NewVersionManagement from "@/pages/NewVersionManagement";
+import NewVersion from "@/pages/NewVersion";
 import OrganizationChart from "./pages/OrganizationChart";
 import EmployeeManagement from "./pages/EmployeeManagement";
 
@@ -22,7 +22,7 @@ function App() {
       <div className="main px-10 py-5">
         <Routes>
           <Route path="/" element={<VersionManagement />} />
-          <Route path="/version/new" element={<NewVersionManagement />} />
+          <Route path="/version/new" element={<NewVersion />} />
           <Route path="/department" element={<DepartmentManagement />} />
           <Route path="/employee" element={<EmployeeManagement />} />
           <Route path="/orgchart" element={<OrganizationChart />} />

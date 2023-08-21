@@ -3,7 +3,7 @@ import { useMutation } from "@apollo/client";
 import DatePickerCustom from "@/components/common/DatePickerCustom";
 import { CREATE_VERSION } from "@/mutations/versionMutations";
 
-const NewVersionManagement = () => {
+const NewVersion = () => {
   const [name, setName] = useState("");
   const [createVersion] = useMutation(CREATE_VERSION);
   const [date, setDate] = useState<Date | null>();
@@ -52,4 +52,4 @@ const NewVersionManagement = () => {
   );
 };
 
-export default NewVersionManagement;
+export default NewVersion;
