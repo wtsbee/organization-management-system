@@ -5,6 +5,7 @@ export const CREATE_VERSION = gql`
     createVersion(input: $input) {
       id
       name
+      startedAt
     }
   }
 `;
