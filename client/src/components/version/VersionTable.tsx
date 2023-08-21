@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { FormatDateToYYYYMMDD } from "@/functions/common.ts";
 import { Version } from "@/types/version.ts";
 
@@ -24,12 +25,14 @@ const VersionTable = ({ versions }: Props) => {
               <td>{FormatDateToYYYYMMDD(version.startedAt)}</td>
               <td>{version.name}</td>
               <td>
-                <div className="flex justify-end">
-                  <button className="btn btn-outline btn-warning mr-1">
-                    編集
-                  </button>
-                  <button className="btn btn-outline btn-error">削除</button>
-                </div>
+                <Link to={`/version/${version.id}`} className="">
+                  <div className="flex justify-end">
+                    <button className="btn btn-outline btn-warning mr-1">
+                      編集
+                    </button>
+                    <button className="btn btn-outline btn-error">削除</button>
+                  </div>
+                </Link>
               </td>
             </tr>
           ))}

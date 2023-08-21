@@ -25,7 +25,7 @@ const NewVersion = () => {
   };
   return (
     <>
-      <h1 className="text-xl font-bold">バージョン登録画面</h1>
+      <h1 className="text-xl font-bold">バージョン登録</h1>
       <div className="mt-5">
         <label>バージョン名</label>
         <br />
