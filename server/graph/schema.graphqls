@@ -26,6 +26,7 @@ type Version {
 
 type Query {
   todos: [Todo!]!
+  getVersion(id: ID!): Version!
   getVersions: [Version!]!
 }
 
