@@ -9,6 +9,7 @@ import (
 // インターフェース
 type IVersionUsecase interface {
 	CreateVersion(version model.NewVersion) (*model.Version, error)
+	GetVersion(versionId uint) (*model.Version, error)
 	GetVersions() ([]*model.Version, error)
 }
 
@@ -29,6 +30,16 @@ func (vu *versionUsecase) CreateVersion(version model.NewVersion) (*model.Versio
 	}
 	log.Println("CreateVersion success")
 	return &newVersion, nil
+}
+
+func (vu *versionUsecase) GetVersion(versionId uint) (*model.Version, error) {
+	version := model.Version{}
+	if err := vu.vr.GetVersion(&version, versionId); err != nil {
+		log.Println("GetVersion error", err)
+		return &model.Version{}, err
+	}
+	log.Println("GetVersion success")
+	return &version, nil
 }
 
 func (vu *versionUsecase) GetVersions() ([]*model.Version, error) {

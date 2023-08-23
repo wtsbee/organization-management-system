@@ -6,7 +6,6 @@ package graph
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"math/rand"
 	"my_package/graph/model"
@@ -50,7 +49,7 @@ func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
 
 // GetVersion is the resolver for the getVersion field.
 func (r *queryResolver) GetVersion(ctx context.Context, id uint) (*model.Version, error) {
-	panic(fmt.Errorf("not implemented: GetVersion - getVersion"))
+	return r.vu.GetVersion(id)
 }
 
 // GetVersions is the resolver for the getVersions field.
