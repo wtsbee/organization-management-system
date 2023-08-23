@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import DatePickerCustom from "@/components/common/DatePickerCustom";
 import { CREATE_VERSION } from "@/mutations/versionMutations";
@@ -8,6 +9,7 @@ const NewVersion = () => {
   const [createVersion] = useMutation(CREATE_VERSION);
   const [date, setDate] = useState<Date | null>(null);
   const value = { date, setDate };
+  const navigate = useNavigate();
 
   const editVersionName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -22,6 +24,7 @@ const NewVersion = () => {
         },
       },
     });
+    navigate("/");
   };
   return (
     <>
