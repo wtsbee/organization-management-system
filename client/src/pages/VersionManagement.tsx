@@ -5,7 +5,9 @@ import { GET_VERSIONS } from "@/queries/versionQueries";
 import { Version } from "@/types/version.ts";
 
 const VersionManagement = () => {
-  const { data } = useQuery<{ getVersions: Version[] }>(GET_VERSIONS);
+  const { data } = useQuery<{ getVersions: Version[] }>(GET_VERSIONS, {
+    fetchPolicy: "no-cache",
+  });
   const versions = data?.getVersions;
   return (
     <>

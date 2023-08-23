@@ -25,14 +25,14 @@ const VersionTable = ({ versions }: Props) => {
               <td>{FormatDateToYYYYMMDD(version.startedAt)}</td>
               <td>{version.name}</td>
               <td>
-                <Link to={`/version/${version.id}`} className="">
-                  <div className="flex justify-end">
+                <div className="flex justify-end">
+                  <Link to={`/version/${version.id}`} className="">
                     <button className="btn btn-outline btn-warning mr-1">
                       編集
                     </button>
-                    <button className="btn btn-outline btn-error">削除</button>
-                  </div>
-                </Link>
+                  </Link>
+                  <button className="btn btn-outline btn-error">削除</button>
+                </div>
               </td>
             </tr>
           ))}

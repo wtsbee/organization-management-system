@@ -6,7 +6,7 @@ import { CREATE_VERSION } from "@/mutations/versionMutations";
 const NewVersion = () => {
   const [name, setName] = useState("");
   const [createVersion] = useMutation(CREATE_VERSION);
-  const [date, setDate] = useState<Date | null>();
+  const [date, setDate] = useState<Date | null>(null);
   const value = { date, setDate };
 
   const editVersionName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,6 +33,7 @@ const NewVersion = () => {
           type="text"
           placeholder="バージョン名を入力してください"
           className="input input-bordered w-full max-w-xs mt-1"
+          value={name}
           onChange={editVersionName}
         />
       </div>

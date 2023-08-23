@@ -20,7 +20,7 @@ const DatePickerCustom = ({ value }: Props) => {
       dateFormat="yyyy/MM/dd"
       locale="ja"
       selected={date}
-      onChange={(date) => setDate(date)}
+      onChange={(inputDate) => setDate(inputDate)}
     />
   );
 };
