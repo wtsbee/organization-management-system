@@ -11,6 +11,7 @@ type IVersionRepository interface {
 	CreateVersion(version *model.Version) error
 	GetVersion(version *model.Version, versionId uint) error
 	GetVersions(versions *[]*model.Version) error
+	UpdateVersion(version *model.Version, versionId uint) error
 }
 
 type versionRepository struct {
@@ -39,6 +40,14 @@ func (vr *versionRepository) GetVersion(version *model.Version, versionId uint) 
 
 func (vr *versionRepository) GetVersions(versions *[]*model.Version) error {
 	err := vr.db.Find(versions).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (vr *versionRepository) UpdateVersion(version *model.Version, versionId uint) error {
+	err := vr.db.Model(version).Where("id=?", versionId).Updates(version).Error
 	if err != nil {
 		return err
 	}

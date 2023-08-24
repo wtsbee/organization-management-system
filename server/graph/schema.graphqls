@@ -40,7 +40,14 @@ input NewVersion {
   startedAt: DateTime!
 }
 
+input UpdateVersion {
+  id: ID!
+  name: String!
+  startedAt: DateTime!
+}
+
 type Mutation {
   createTodo(input: NewTodo!): Todo!
   createVersion(input: NewVersion!): Version!
+  updateVersion(input: UpdateVersion!): Version!
 }

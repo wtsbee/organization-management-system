@@ -11,6 +11,7 @@ type IVersionUsecase interface {
 	CreateVersion(version model.NewVersion) (*model.Version, error)
 	GetVersion(versionId uint) (*model.Version, error)
 	GetVersions() ([]*model.Version, error)
+	UpdateVersion(version model.UpdateVersion) (*model.Version, error)
 }
 
 type versionUsecase struct {
@@ -50,4 +51,14 @@ func (vu *versionUsecase) GetVersions() ([]*model.Version, error) {
 	}
 	log.Println("GetVersions success")
 	return versions, nil
+}
+
+func (vu *versionUsecase) UpdateVersion(version model.UpdateVersion) (*model.Version, error) {
+	newVersion := model.Version{ID: version.ID, Name: version.Name, StartedAt: version.StartedAt}
+	if err := vu.vr.UpdateVersion(&newVersion, version.ID); err != nil {
+		log.Println("UpdateVersion error", err)
+		return &model.Version{}, err
+	}
+	log.Println("UpdateVersion success")
+	return &newVersion, nil
 }

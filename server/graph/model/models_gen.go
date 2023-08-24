@@ -23,6 +23,12 @@ type Todo struct {
 	User *User  `json:"user"`
 }
 
+type UpdateVersion struct {
+	ID        uint      `json:"id"`
+	Name      string    `json:"name"`
+	StartedAt time.Time `json:"startedAt"`
+}
+
 type User struct {
 	ID   uint   `json:"id"`
 	Name string `json:"name"`

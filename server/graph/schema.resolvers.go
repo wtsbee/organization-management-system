@@ -42,6 +42,11 @@ func (r *mutationResolver) CreateVersion(ctx context.Context, input model.NewVer
 	return r.vu.CreateVersion(input)
 }
 
+// UpdateVersion is the resolver for the updateVersion field.
+func (r *mutationResolver) UpdateVersion(ctx context.Context, input model.UpdateVersion) (*model.Version, error) {
+	return r.vu.UpdateVersion(input)
+}
+
 // Todos is the resolver for the todos field.
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
 	return r.todos, nil
