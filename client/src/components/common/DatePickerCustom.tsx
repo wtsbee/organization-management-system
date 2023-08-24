@@ -5,8 +5,8 @@ registerLocale("ja", ja);
 
 type Props = {
   value: {
-    date: Date | null | undefined;
-    setDate: React.Dispatch<React.SetStateAction<Date | null | undefined>>;
+    date: Date | null;
+    setDate: React.Dispatch<React.SetStateAction<Date | null>>;
   };
 };
 

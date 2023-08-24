@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useQuery } from "@apollo/client";
+import { useNavigate, useParams } from "react-router-dom";
+import { useMutation, useQuery } from "@apollo/client";
 import DatePickerCustom from "@/components/common/DatePickerCustom";
+import { UPDATE_VERSION } from "@/mutations/versionMutations";
 import { GET_VERSION } from "@/queries/versionQueries";
 import { Version } from "@/types/version.ts";
 
 const EditVersion = () => {
+  const navigate = useNavigate();
+
   // URLの動的なバージョンidを取得
   const { id } = useParams();
 
@@ -31,6 +34,21 @@ const EditVersion = () => {
 
   const editVersionName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
+  };
+
+  const [updateVersion] = useMutation(UPDATE_VERSION);
+
+  const onUpdate = async () => {
+    await updateVersion({
+      variables: {
+        input: {
+          id,
+          name,
+          startedAt: date,
+        },
+      },
+    });
+    navigate("/");
   };
 
   useEffect(() => {
@@ -67,7 +85,9 @@ const EditVersion = () => {
             </div>
           </div>
           <div className="mt-5">
-            <button className="btn btn-primary ">更新</button>
+            <button className="btn btn-primary" onClick={onUpdate}>
+              更新
+            </button>
           </div>
         </>
       )}

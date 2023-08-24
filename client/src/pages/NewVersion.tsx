@@ -15,11 +15,11 @@ const NewVersion = () => {
     setName(e.target.value);
   };
 
-  const onRegister = () => {
-    createVersion({
+  const onRegister = async () => {
+    await createVersion({
       variables: {
         input: {
-          name: name,
+          name,
           startedAt: date,
         },
       },

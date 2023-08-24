@@ -9,3 +9,13 @@ export const CREATE_VERSION = gql`
     }
   }
 `;
+
+export const UPDATE_VERSION = gql`
+  mutation UpdateVersion($input: UpdateVersion!) {
+    updateVersion(input: $input) {
+      id
+      name
+      startedAt
+    }
+  }
+`;
