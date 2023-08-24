@@ -49,5 +49,6 @@ input UpdateVersion {
 type Mutation {
   createTodo(input: NewTodo!): Todo!
   createVersion(input: NewVersion!): Version!
+  deleteVersion(id: ID!): Boolean!
   updateVersion(input: UpdateVersion!): Version!
 }

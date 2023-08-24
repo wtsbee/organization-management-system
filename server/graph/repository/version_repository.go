@@ -9,6 +9,7 @@ import (
 // インターフェース
 type IVersionRepository interface {
 	CreateVersion(version *model.Version) error
+	DeleteVersion(id uint) error
 	GetVersion(version *model.Version, versionId uint) error
 	GetVersions(versions *[]*model.Version) error
 	UpdateVersion(version *model.Version, versionId uint) error
@@ -25,6 +26,14 @@ func NewVersionRepository(db *gorm.DB) IVersionRepository {
 
 func (vr *versionRepository) CreateVersion(version *model.Version) error {
 	if err := vr.db.Create(version).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (vr *versionRepository) DeleteVersion(id uint) error {
+	err := vr.db.Delete(&model.Version{}, id).Error
+	if err != nil {
 		return err
 	}
 	return nil

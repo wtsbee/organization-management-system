@@ -42,6 +42,11 @@ func (r *mutationResolver) CreateVersion(ctx context.Context, input model.NewVer
 	return r.vu.CreateVersion(input)
 }
 
+// DeleteVersion is the resolver for the deleteVersion field.
+func (r *mutationResolver) DeleteVersion(ctx context.Context, id uint) (bool, error) {
+	return r.vu.DeleteVersion(id)
+}
+
 // UpdateVersion is the resolver for the updateVersion field.
 func (r *mutationResolver) UpdateVersion(ctx context.Context, input model.UpdateVersion) (*model.Version, error) {
 	return r.vu.UpdateVersion(input)
