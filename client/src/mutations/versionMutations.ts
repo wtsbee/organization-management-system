@@ -10,6 +10,12 @@ export const CREATE_VERSION = gql`
   }
 `;
 
+export const DELETE_VERSION = gql`
+  mutation DeteleVersion($id: ID!) {
+    deleteVersion(id: $id)
+  }
+`;
+
 export const UPDATE_VERSION = gql`
   mutation UpdateVersion($input: UpdateVersion!) {
     updateVersion(input: $input) {

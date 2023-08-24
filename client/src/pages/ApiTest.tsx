@@ -29,7 +29,7 @@ const Test = () => {
     <>
       <div>
         <h1 className="text-xl font-bold">APIテスト</h1>
-        <button className="mt-5 btn btn-primary" onClick={() => onHandle()}>
+        <button className="mt-5 btn btn-primary" onClick={onHandle}>
           API実行
         </button>
       </div>

@@ -5,7 +5,7 @@ import { GET_VERSIONS } from "@/queries/versionQueries";
 import { Version } from "@/types/version.ts";
 
 const VersionManagement = () => {
-  const { data } = useQuery<{ getVersions: Version[] }>(GET_VERSIONS, {
+  const { data, refetch } = useQuery<{ getVersions: Version[] }>(GET_VERSIONS, {
     fetchPolicy: "no-cache",
   });
   const versions = data?.getVersions;
@@ -14,7 +14,7 @@ const VersionManagement = () => {
       <h1 className="text-xl font-bold">バージョン管理</h1>
 
       <div className="mt-5">
-        <VersionTable versions={versions} />
+        <VersionTable versions={versions} refetch={refetch} />
       </div>
       <Link to="/version/new" className="">
         <div className="fixed top-28 right-20">

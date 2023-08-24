@@ -1,12 +1,37 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  ApolloQueryResult,
+  OperationVariables,
+  useMutation,
+} from "@apollo/client";
 import { FormatDateToYYYYMMDD } from "@/functions/common.ts";
 import { Version } from "@/types/version.ts";
+import { DELETE_VERSION } from "@/mutations/versionMutations";
 
 type Props = {
   versions: Version[] | undefined;
+  refetch: (variables?: Partial<OperationVariables> | undefined) => Promise<
+    ApolloQueryResult<{
+      getVersions: Version[];
+    }>
+  >;
 };
 
-const VersionTable = ({ versions }: Props) => {
+const VersionTable = ({ versions, refetch }: Props) => {
+  const navigate = useNavigate();
+
+  const [deleteVersion] = useMutation(DELETE_VERSION);
+
+  const onDelete = async (id: number) => {
+    await deleteVersion({
+      variables: {
+        id,
+      },
+    });
+    navigate("/");
+    refetch();
+  };
+
   return (
     <div className="overflow-x-auto">
       <table className="table">
@@ -31,7 +56,12 @@ const VersionTable = ({ versions }: Props) => {
                       編集
                     </button>
                   </Link>
-                  <button className="btn btn-outline btn-error">削除</button>
+                  <button
+                    className="btn btn-outline btn-error"
+                    onClick={() => onDelete(version.id)}
+                  >
+                    削除
+                  </button>
                 </div>
               </td>
             </tr>
