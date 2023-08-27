@@ -14,10 +14,11 @@ import (
 )
 
 // コンストラクタ
-func NewResolver(vu usecase.IVersionUsecase) *Resolver {
+func NewResolver(vu usecase.IVersionUsecase, du usecase.IDepartmentUsecase) *Resolver {
 	return &Resolver{
 		todos: []*model.Todo{},
 		vu:    vu,
+		du:    du,
 	}
 }
 
@@ -55,6 +56,11 @@ func (r *mutationResolver) UpdateVersion(ctx context.Context, input model.Update
 // Todos is the resolver for the todos field.
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
 	return r.todos, nil
+}
+
+// GetDepartmentTree is the resolver for the getDepartmentTree field.
+func (r *queryResolver) GetDepartmentTree(ctx context.Context, id uint) ([]*model.DepartmentTree, error) {
+	return r.du.GetDepartmentTree(id)
 }
 
 // GetVersion is the resolver for the getVersion field.

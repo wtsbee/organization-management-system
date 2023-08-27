@@ -11,6 +11,14 @@ type Todo {
   user: User!
 }
 
+type DepartmentTree {
+  id: ID!
+  name: String!
+  code: String!
+  ancestry: String!
+  children: [DepartmentTree!]!
+}
+
 type User {
   id: ID!
   name: String!
@@ -26,6 +34,7 @@ type Version {
 
 type Query {
   todos: [Todo!]!
+  getDepartmentTree(id: ID!): [DepartmentTree!]!
   getVersion(id: ID!): Version!
   getVersions: [Version!]!
 }
