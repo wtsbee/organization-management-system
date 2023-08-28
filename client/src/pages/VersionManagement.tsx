@@ -13,7 +13,6 @@ const VersionManagement = () => {
   return (
     <>
       <h1 className="text-xl font-bold">バージョン管理</h1>
-
       <div className="mt-5">
         <VersionTable versions={versions} refetch={refetch} />
       </div>
