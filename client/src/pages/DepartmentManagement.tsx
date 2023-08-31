@@ -21,13 +21,13 @@ const DepartmentManagement = () => {
       {!loading && !error && departments != undefined && (
         <>
           <div className="mt-5 flex gap-3">
-            <div className="card bg-neutral-200 w-1/2">
+            <div className="w-1/3 card bg-neutral-200">
               <div className="menu">
                 <DepartmentTree departments={departments} />
               </div>
             </div>
-            <div className="w-1/2">
-              <DpartmentInputForm />
+            <div className="w-2/3 px-2 card bg-neutral-200">
+              <DpartmentInputForm departments={departments} />
             </div>
           </div>
         </>
