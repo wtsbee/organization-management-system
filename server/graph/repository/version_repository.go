@@ -2,6 +2,7 @@ package repository
 
 import (
 	"my_package/graph/model"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -10,6 +11,7 @@ import (
 type IVersionRepository interface {
 	CreateVersion(version *model.Version) error
 	DeleteVersion(id uint) error
+	GetCurrentVersion(version *model.Version) error
 	GetVersion(version *model.Version, versionId uint) error
 	GetVersions(versions *[]*model.Version) error
 	UpdateVersion(version *model.Version, versionId uint) error
@@ -39,6 +41,14 @@ func (vr *versionRepository) DeleteVersion(id uint) error {
 	return nil
 }
 
+func (vr *versionRepository) GetCurrentVersion(version *model.Version) error {
+	err := vr.db.Order("started_at desc").Where("started_at <= ?", time.Now()).First(version).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (vr *versionRepository) GetVersion(version *model.Version, versionId uint) error {
 	err := vr.db.Find(version, versionId).Error
 	if err != nil {
@@ -48,7 +58,7 @@ func (vr *versionRepository) GetVersion(version *model.Version, versionId uint) 
 }
 
 func (vr *versionRepository) GetVersions(versions *[]*model.Version) error {
-	err := vr.db.Find(versions).Error
+	err := vr.db.Order("started_at asc").Find(versions).Error
 	if err != nil {
 		return err
 	}

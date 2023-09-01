@@ -13,15 +13,6 @@ import (
 	"strconv"
 )
 
-// コンストラクタ
-func NewResolver(vu usecase.IVersionUsecase, du usecase.IDepartmentUsecase) *Resolver {
-	return &Resolver{
-		todos: []*model.Todo{},
-		vu:    vu,
-		du:    du,
-	}
-}
-
 // CreateTodo is the resolver for the createTodo field.
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
 	uintUserID, err := strconv.ParseUint(input.UserID, 10, 64)
@@ -69,8 +60,12 @@ func (r *queryResolver) GetVersion(ctx context.Context, id uint) (*model.Version
 }
 
 // GetVersions is the resolver for the getVersions field.
-func (r *queryResolver) GetVersions(ctx context.Context) ([]*model.Version, error) {
-	return r.vu.GetVersions()
+func (r *queryResolver) GetVersions(ctx context.Context) ([]*model.ResponseVersion, error) {
+	versions, err := r.vu.GetVersions()
+	if err != nil {
+		return nil, err
+	}
+	return versions, nil
 }
 
 // Mutation returns MutationResolver implementation.
@@ -81,3 +76,17 @@ func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+
+// !!! WARNING !!!
+// The code below was going to be deleted when updating resolvers. It has been copied here so you have
+// one last chance to move it out of harms way if you want. There are two reasons this happens:
+//   - When renaming or deleting a resolver the old code will be put in here. You can safely delete
+//     it when you're done.
+//   - You have helper methods in this file. Move them out to keep these resolver files clean.
+func NewResolver(vu usecase.IVersionUsecase, du usecase.IDepartmentUsecase) *Resolver {
+	return &Resolver{
+		todos: []*model.Todo{},
+		vu:    vu,
+		du:    du,
+	}
+}

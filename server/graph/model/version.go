@@ -9,3 +9,10 @@ type Version struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
+
+type ResponseVersion struct {
+	ID        uint      `json:"id"`
+	Name      string    `json:"name"`
+	StartedAt time.Time `json:"started_at"`
+	Status    string    `json:"status"`
+}
