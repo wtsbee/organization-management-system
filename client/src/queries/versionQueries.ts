@@ -16,6 +16,7 @@ export const GET_VERSIONS = gql`
       id
       name
       startedAt
+      status
     }
   }
 `;

@@ -37,10 +37,10 @@ const VersionTable = ({ versions, refetch }: Props) => {
       <table className="table">
         <thead>
           <tr>
-            <th></th>
-            <th>利用開始日</th>
-            <th>バージョン名</th>
-            <th></th>
+            <th className="w-1/4"></th>
+            <th className="w-1/4">利用開始日</th>
+            <th className="w-1/4">バージョン名</th>
+            <th className="w-1/4"></th>
           </tr>
         </thead>
         <tbody>
@@ -48,7 +48,14 @@ const VersionTable = ({ versions, refetch }: Props) => {
             <tr key={version.id}>
               <th>{index + 1}</th>
               <td>{FormatDateToYYYYMMDD(version.startedAt)}</td>
-              <td>{version.name}</td>
+              {version.status == "current" ? (
+                <td>
+                  {version.name}
+                  <span className="font-bold ml-5">★★現在のバージョン★★</span>
+                </td>
+              ) : (
+                <td>{version.name}</td>
+              )}
               <td>
                 <div className="flex justify-end">
                   <Link to={`/version/${version.id}`} className="">
