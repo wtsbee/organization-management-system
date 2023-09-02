@@ -48,7 +48,7 @@ const NewVersion = () => {
         </div>
       </div>
       <div className="mt-5">
-        <button className="btn btn-primary " onClick={onRegister}>
+        <button className="btn btn-primary" onClick={onRegister}>
           登録
         </button>
       </div>

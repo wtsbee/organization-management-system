@@ -1,18 +1,47 @@
+// import { useState } from "react";
 import { DepartmentTree as Department } from "@/types/department.ts";
 
 type Props = {
   departments: Department[];
+  value: {
+    selectedDepartment: string;
+    setSelectedDepartment: React.Dispatch<React.SetStateAction<string>>;
+  };
 };
 
-const DpartmentInputForm = ({ departments }: Props) => {
+const DpartmentInputForm = ({ departments, value }: Props) => {
+  const { selectedDepartment, setSelectedDepartment } = { ...value };
+
+  const generateAncestry = (department: Department): string => {
+    const ancestry = !department.ancestry
+      ? department.id.toString()
+      : `${department.ancestry}/${department.id}`;
+    return ancestry;
+  };
+
   const renderSelectOption = (department: Department): JSX.Element => (
     <>
-      <option key={department.id}>{department.name}</option>
+      <option
+        key={department.id}
+        value={generateAncestry(department)}
+        selected={generateAncestry(department) == selectedDepartment}
+      >
+        {department.name}
+      </option>
       {department.children.length > 0 && (
         <>{department.children.map((child) => renderSelectOption(child))}</>
       )}
     </>
   );
+
+  const handleRegisteration = () => {
+    console.log(selectedDepartment);
+  };
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(e.target.value);
+    setSelectedDepartment(e.target.value);
+  };
 
   return (
     <>
@@ -40,12 +69,20 @@ const DpartmentInputForm = ({ departments }: Props) => {
         <label className="label">
           <span>この部署の配下に所属</span>
         </label>
-        <select className="select select-bordered font-normal">
+        <select
+          onChange={handleSelectChange}
+          className="select select-bordered font-normal"
+        >
           <option value="" disabled selected>
             部署を選択
           </option>
           {departments.map((department) => renderSelectOption(department))}
         </select>
+      </div>
+      <div className="my-5">
+        <button onClick={handleRegisteration} className="btn btn-primary">
+          登録
+        </button>
       </div>
     </>
   );

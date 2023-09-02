@@ -5,6 +5,7 @@ export const GET_DEPARTMENT_TREE = gql`
     id
     name
     code
+    ancestry
   }
 
   query GetDepartmentTree($id: ID!) {
