@@ -1,5 +1,7 @@
-// import { useState } from "react";
+import { useState } from "react";
+import { useMutation } from "@apollo/client";
 import { DepartmentTree as Department } from "@/types/department.ts";
+import { CREATE_DEPARTMENT } from "@/mutations/departmentMutations";
 
 type Props = {
   departments: Department[];
@@ -7,10 +9,49 @@ type Props = {
     selectedDepartment: string;
     setSelectedDepartment: React.Dispatch<React.SetStateAction<string>>;
   };
+  refetch: () => void;
 };
 
-const DpartmentInputForm = ({ departments, value }: Props) => {
+const DpartmentInputForm = ({ departments, value, refetch }: Props) => {
+  const [createDepartment] = useMutation(CREATE_DEPARTMENT);
+  const [name, setName] = useState("");
+  const [code, setCode] = useState("");
   const { selectedDepartment, setSelectedDepartment } = { ...value };
+
+  const editDepartmentName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  };
+
+  const editDepartmentCode = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCode(e.target.value);
+  };
+
+  const resetInputForm = () => {
+    setName("");
+    setCode("");
+    setSelectedDepartment("");
+  };
+
+  const handleRegisteration = async () => {
+    if (selectedDepartment !== "") {
+      await createDepartment({
+        variables: {
+          input: {
+            name,
+            code,
+            ancestry: selectedDepartment,
+            versionId: 1,
+          },
+        },
+      });
+      resetInputForm();
+      refetch();
+    }
+  };
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedDepartment(e.target.value);
+  };
 
   const generateAncestry = (department: Department): string => {
     const ancestry = !department.ancestry
@@ -34,15 +75,6 @@ const DpartmentInputForm = ({ departments, value }: Props) => {
     </>
   );
 
-  const handleRegisteration = () => {
-    console.log(selectedDepartment);
-  };
-
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(e.target.value);
-    setSelectedDepartment(e.target.value);
-  };
-
   return (
     <>
       <div className="mt-5">
@@ -53,6 +85,8 @@ const DpartmentInputForm = ({ departments, value }: Props) => {
           type="text"
           placeholder="部署名を入力してください"
           className="input input-bordered w-full max-w-xs"
+          value={name}
+          onChange={editDepartmentName}
         />
       </div>
       <div className="mt-5">
@@ -63,6 +97,8 @@ const DpartmentInputForm = ({ departments, value }: Props) => {
           type="text"
           placeholder="部署コードを入力してください"
           className="input input-bordered w-full max-w-xs"
+          value={code}
+          onChange={editDepartmentCode}
         />
       </div>
       <div className="form-control w-full max-w-xs mt-5">

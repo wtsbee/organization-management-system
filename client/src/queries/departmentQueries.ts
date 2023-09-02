@@ -19,6 +19,24 @@ export const GET_DEPARTMENT_TREE = gql`
             ...DepartmentPart
             children {
               ...DepartmentPart
+              children {
+                ...DepartmentPart
+                children {
+                  ...DepartmentPart
+                  children {
+                    ...DepartmentPart
+                    children {
+                      ...DepartmentPart
+                      children {
+                        ...DepartmentPart
+                        children {
+                          ...DepartmentPart
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }

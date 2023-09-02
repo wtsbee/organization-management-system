@@ -1,9 +1,9 @@
+import { useState } from "react";
 import { useQuery } from "@apollo/client";
 import DpartmentInputForm from "@/components//department/DpartmentInputForm";
 import DepartmentTree from "@/components//department/DepartmentTree";
 import { GET_DEPARTMENT_TREE } from "@/queries/departmentQueries";
 import { DepartmentTree as Department } from "@/types/department.ts";
-import { useState } from "react";
 
 const DepartmentManagement = () => {
   const [selectedDepartment, setSelectedDepartment] = useState("");
@@ -13,7 +13,7 @@ const DepartmentManagement = () => {
   };
 
   // APIからデータを取得
-  const { data, error, loading } = useQuery<{
+  const { data, error, loading, refetch } = useQuery<{
     getDepartmentTree: Department[];
   }>(GET_DEPARTMENT_TREE, {
     variables: { id: 1 },
@@ -37,7 +37,11 @@ const DepartmentManagement = () => {
               </div>
             </div>
             <div className="w-2/3 px-2 card bg-neutral-200">
-              <DpartmentInputForm departments={departments} value={value} />
+              <DpartmentInputForm
+                departments={departments}
+                value={value}
+                refetch={refetch}
+              />
             </div>
           </div>
         </>
