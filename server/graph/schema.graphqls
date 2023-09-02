@@ -11,6 +11,16 @@ type Todo {
   user: User!
 }
 
+type Department {
+  id: ID!
+  name: String!
+  code: String!
+  ancestry: String!
+  versionId: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
 type DepartmentTree {
   id: ID!
   name: String!
@@ -51,6 +61,13 @@ input NewTodo {
   userId: String!
 }
 
+input NewDepartment {
+  name: String!
+  code: String!
+  ancestry: String!
+  versionId: ID!
+}
+
 input NewVersion {
   name: String!
   startedAt: DateTime!
@@ -64,6 +81,7 @@ input UpdateVersion {
 
 type Mutation {
   createTodo(input: NewTodo!): Todo!
+  createDepartment(input: NewDepartment!): Department!
   createVersion(input: NewVersion!): Version!
   deleteVersion(id: ID!): Boolean!
   updateVersion(input: UpdateVersion!): Version!

@@ -10,6 +10,7 @@ import (
 
 // インターフェース
 type IDepartmentUsecase interface {
+	CreateDepartment(department model.NewDepartment) (*model.Department, error)
 	GetDepartmentTree(versionId uint) ([]*model.DepartmentTree, error)
 }
 
@@ -20,6 +21,16 @@ type departmentUsecase struct {
 // コンストラクタ
 func NewDepartmentUsecase(dr repository.IDepartmentRepository) IDepartmentUsecase {
 	return &departmentUsecase{dr}
+}
+
+func (du *departmentUsecase) CreateDepartment(department model.NewDepartment) (*model.Department, error) {
+	NewDepartment := model.Department{Name: department.Name, Code: department.Code, Ancestry: department.Ancestry, VersionId: department.VersionID}
+	if err := du.dr.CreateDepartment(&NewDepartment); err != nil {
+		log.Println("CreateDepartment error", err)
+		return &model.Department{}, err
+	}
+	log.Println("CreateDepartment success")
+	return &NewDepartment, nil
 }
 
 func (du *departmentUsecase) GetDepartmentTree(versionId uint) ([]*model.DepartmentTree, error) {

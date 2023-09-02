@@ -8,6 +8,7 @@ import (
 
 // インターフェース
 type IDepartmentRepository interface {
+	CreateDepartment(department *model.Department) error
 	GetDepartmentsByVersionId(departments *[]*model.Department, versionId uint) error
 }
 
@@ -18,6 +19,13 @@ type departmentRepository struct {
 // コンストラクタ
 func NewDepartmentRepository(db *gorm.DB) IDepartmentRepository {
 	return &departmentRepository{db}
+}
+
+func (dr *departmentRepository) CreateDepartment(department *model.Department) error {
+	if err := dr.db.Create(department).Error; err != nil {
+		return err
+	}
+	return nil
 }
 
 func (dr *departmentRepository) GetDepartmentsByVersionId(departments *[]*model.Department, versionId uint) error {

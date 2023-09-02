@@ -29,6 +29,11 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 	return todo, nil
 }
 
+// CreateDepartment is the resolver for the createDepartment field.
+func (r *mutationResolver) CreateDepartment(ctx context.Context, input model.NewDepartment) (*model.Department, error) {
+	return r.du.CreateDepartment(input)
+}
+
 // CreateVersion is the resolver for the createVersion field.
 func (r *mutationResolver) CreateVersion(ctx context.Context, input model.NewVersion) (*model.Version, error) {
 	return r.vu.CreateVersion(input)

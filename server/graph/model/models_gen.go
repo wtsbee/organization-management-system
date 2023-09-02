@@ -6,6 +6,13 @@ import (
 	"time"
 )
 
+type NewDepartment struct {
+	Name      string `json:"name"`
+	Code      string `json:"code"`
+	Ancestry  string `json:"ancestry"`
+	VersionID uint   `json:"versionId"`
+}
+
 type NewTodo struct {
 	Text   string `json:"text"`
 	UserID string `json:"userId"`
