@@ -59,6 +59,11 @@ func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
 	return r.todos, nil
 }
 
+// GetDepartments is the resolver for the getDepartments field.
+func (r *queryResolver) GetDepartments(ctx context.Context, id uint) ([]*model.Department, error) {
+	return r.du.GetDepartments(id)
+}
+
 // GetDepartmentTree is the resolver for the getDepartmentTree field.
 func (r *queryResolver) GetDepartmentTree(ctx context.Context, id uint) ([]*model.DepartmentTree, error) {
 	return r.du.GetDepartmentTree(id)
