@@ -31,6 +31,7 @@ const EmployeeManagement = () => {
     }>({
       query: GET_EMPLOYEES,
       variables: { id: department.id },
+      fetchPolicy: "no-cache",
     });
     setEmployees(resData?.getEmployees);
   };
