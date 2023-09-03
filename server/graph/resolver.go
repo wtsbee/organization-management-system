@@ -9,4 +9,5 @@ type Resolver struct {
 	todos []*model.Todo
 	vu    usecase.IVersionUsecase
 	du    usecase.IDepartmentUsecase
+	eu    usecase.IEmployeeUsecase
 }

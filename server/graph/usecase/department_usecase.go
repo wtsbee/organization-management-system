@@ -63,6 +63,6 @@ func (du *departmentUsecase) GetDepartmentTree(versionId uint) ([]*model.Departm
 			parent.Children = append(parent.Children, dep)
 		}
 	}
-
+	log.Println("GetDepartmentTree success")
 	return rootDepartments, nil
 }

@@ -56,7 +56,6 @@ func (vu *versionUsecase) GetVersion(versionId uint) (*model.Version, error) {
 }
 
 func (vu *versionUsecase) GetVersions() ([]*model.ResponseVersion, error) {
-	// currentVersion := model.Version{}
 	if err := vu.vr.GetCurrentVersion(&CurrentVersion); err != nil {
 		log.Println("GetCurrentVersion error", err)
 		return nil, err
@@ -84,23 +83,6 @@ func (vu *versionUsecase) UpdateVersion(version model.UpdateVersion) (*model.Ver
 	return &newVersion, nil
 }
 
-// func isInUse(inputTime time.Time) bool {
-// 	// var names []string
-// 	// if err := db.Table("users").Select("name").Find(&names).Error; err != nil {
-// 	// 	fmt.Println("Error:", err)
-// 	// }
-// 	return true
-// }
-
-// func formatVersionData(v model.Version) map[string]interface{} {
-// 	result := make(map[string]interface{})
-// 	result["id"] = v.ID
-// 	result["startedAt"] = v.StartedAt.Format("2006.01.02") // "YYYY.MM.DD" フォーマットに変換
-// 	result["title"] = v.Name
-// 	result["status"] = status(v)
-// 	return result
-// }
-
 func checkStatus(v model.Version) string {
 	if isFuture(v) {
 		return "future"
@@ -112,7 +94,6 @@ func checkStatus(v model.Version) string {
 }
 
 func isFuture(v model.Version) bool {
-	// return v.StartedAt.After(time.Now())
 	return v.StartedAt.After(CurrentVersion.StartedAt)
 }
 

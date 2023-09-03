@@ -29,6 +29,15 @@ type DepartmentTree {
   children: [DepartmentTree!]!
 }
 
+type Employee {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  DepartmentId: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
 type ResponseVersion {
   id: ID!
   name: String!
@@ -52,6 +61,7 @@ type Version {
 type Query {
   todos: [Todo!]!
   getDepartmentTree(id: ID!): [DepartmentTree!]!
+  getEmployees(id: ID!): [Employee!]
   getVersion(id: ID!): Version!
   getVersions: [ResponseVersion!]!
 }

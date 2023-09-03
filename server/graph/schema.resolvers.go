@@ -59,6 +59,11 @@ func (r *queryResolver) GetDepartmentTree(ctx context.Context, id uint) ([]*mode
 	return r.du.GetDepartmentTree(id)
 }
 
+// GetEmployees is the resolver for the getEmployees field.
+func (r *queryResolver) GetEmployees(ctx context.Context, id uint) ([]*model.Employee, error) {
+	return r.eu.GetEmployees(id)
+}
+
 // GetVersion is the resolver for the getVersion field.
 func (r *queryResolver) GetVersion(ctx context.Context, id uint) (*model.Version, error) {
 	return r.vu.GetVersion(id)
@@ -88,10 +93,11 @@ type queryResolver struct{ *Resolver }
 //   - When renaming or deleting a resolver the old code will be put in here. You can safely delete
 //     it when you're done.
 //   - You have helper methods in this file. Move them out to keep these resolver files clean.
-func NewResolver(vu usecase.IVersionUsecase, du usecase.IDepartmentUsecase) *Resolver {
+func NewResolver(vu usecase.IVersionUsecase, du usecase.IDepartmentUsecase, eu usecase.IEmployeeUsecase) *Resolver {
 	return &Resolver{
 		todos: []*model.Todo{},
 		vu:    vu,
 		du:    du,
+		eu:    eu,
 	}
 }

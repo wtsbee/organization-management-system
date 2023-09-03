@@ -14,10 +14,12 @@ func main() {
 	database.Migrate(db)
 
 	versionRepository := repository.NewVersionRepository(db)
-	depertmentRepository := repository.NewDepartmentRepository(db)
+	departmentRepository := repository.NewDepartmentRepository(db)
+	employeeRepository := repository.NewEmployeeRepository(db)
 	versionUsecase := usecase.NewVersionUsecase(versionRepository)
-	departmentUsecase := usecase.NewDepartmentUsecase(depertmentRepository)
-	resolver := graph.NewResolver(versionUsecase, departmentUsecase)
+	departmentUsecase := usecase.NewDepartmentUsecase(departmentRepository)
+	employeeUsecase := usecase.NewEmployeeUsecase(employeeRepository)
+	resolver := graph.NewResolver(versionUsecase, departmentUsecase, employeeUsecase)
 
 	e := router.Init(resolver)
 
