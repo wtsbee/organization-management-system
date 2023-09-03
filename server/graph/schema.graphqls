@@ -33,7 +33,7 @@ type Employee {
   id: ID!
   firstName: String!
   lastName: String!
-  DepartmentId: ID!
+  departmentId: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -78,6 +78,12 @@ input NewDepartment {
   versionId: ID!
 }
 
+input NewEmployee {
+  firstName: String!
+  lastName: String!
+  departmentId: ID!
+}
+
 input NewVersion {
   name: String!
   startedAt: DateTime!
@@ -92,6 +98,7 @@ input UpdateVersion {
 type Mutation {
   createTodo(input: NewTodo!): Todo!
   createDepartment(input: NewDepartment!): Department!
+  createEmployee(input: NewEmployee!): Employee!
   createVersion(input: NewVersion!): Version!
   deleteVersion(id: ID!): Boolean!
   updateVersion(input: UpdateVersion!): Version!

@@ -13,6 +13,12 @@ type NewDepartment struct {
 	VersionID uint   `json:"versionId"`
 }
 
+type NewEmployee struct {
+	FirstName    string `json:"firstName"`
+	LastName     string `json:"lastName"`
+	DepartmentID uint   `json:"departmentId"`
+}
+
 type NewTodo struct {
 	Text   string `json:"text"`
 	UserID string `json:"userId"`

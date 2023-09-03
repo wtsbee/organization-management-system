@@ -34,6 +34,11 @@ func (r *mutationResolver) CreateDepartment(ctx context.Context, input model.New
 	return r.du.CreateDepartment(input)
 }
 
+// CreateEmployee is the resolver for the createEmployee field.
+func (r *mutationResolver) CreateEmployee(ctx context.Context, input model.NewEmployee) (*model.Employee, error) {
+	return r.eu.CreateEmployee(input)
+}
+
 // CreateVersion is the resolver for the createVersion field.
 func (r *mutationResolver) CreateVersion(ctx context.Context, input model.NewVersion) (*model.Version, error) {
 	return r.vu.CreateVersion(input)
