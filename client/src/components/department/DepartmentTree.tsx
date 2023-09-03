@@ -2,18 +2,13 @@ import { DepartmentTree as Department } from "@/types/department.ts";
 
 type Props = {
   departments: Department[];
-  setSelectedDepartment: React.Dispatch<React.SetStateAction<string>>;
+  handeleSelectDepartment: (department: Department) => void;
 };
 
-const DepartmentTree = ({ departments, setSelectedDepartment }: Props) => {
+const DepartmentTree = ({ departments, handeleSelectDepartment }: Props) => {
   const selectDepartment = (e: React.MouseEvent, department: Department) => {
     e.stopPropagation();
-
-    const ancestry = !department.ancestry
-      ? department.id.toString()
-      : `${department.ancestry}/${department.id}`;
-
-    setSelectedDepartment(ancestry);
+    handeleSelectDepartment(department);
   };
 
   const renderDepartment = (department: Department) => (

@@ -22,6 +22,14 @@ const DepartmentManagement = () => {
 
   const departments = data?.getDepartmentTree;
 
+  const handeleSelectDepartment = (department: Department) => {
+    const ancestry = !department.ancestry
+      ? department.id.toString()
+      : `${department.ancestry}/${department.id}`;
+
+    setSelectedDepartment(ancestry);
+  };
+
   return (
     <>
       <h1 className="text-xl font-bold">部署管理</h1>
@@ -32,7 +40,7 @@ const DepartmentManagement = () => {
               <div className="menu">
                 <DepartmentTree
                   departments={departments}
-                  setSelectedDepartment={setSelectedDepartment}
+                  handeleSelectDepartment={handeleSelectDepartment}
                 />
               </div>
             </div>
