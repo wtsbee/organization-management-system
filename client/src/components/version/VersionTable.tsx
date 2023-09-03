@@ -59,12 +59,12 @@ const VersionTable = ({ versions, refetch }: Props) => {
               <td>
                 <div className="flex justify-end">
                   <Link to={`/version/${version.id}`} className="">
-                    <button className="btn btn-outline btn-warning mr-1">
+                    <button className="btn btn-outline bg-yellow-300 hover:bg-yellow-500 mr-1">
                       編集
                     </button>
                   </Link>
                   <button
-                    className="btn btn-outline btn-error"
+                    className="btn btn-outline bg-red-300 hover:bg-red-500"
                     onClick={() => onDelete(version.id)}
                   >
                     削除

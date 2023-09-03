@@ -15,7 +15,7 @@ const NewVersion = () => {
     setName(e.target.value);
   };
 
-  const onRegister = async () => {
+  const handleRegister = async () => {
     await createVersion({
       variables: {
         input: {
@@ -26,6 +26,7 @@ const NewVersion = () => {
     });
     navigate("/");
   };
+
   return (
     <>
       <h1 className="text-xl font-bold">バージョン登録</h1>
@@ -48,7 +49,10 @@ const NewVersion = () => {
         </div>
       </div>
       <div className="mt-5">
-        <button className="btn btn-primary" onClick={onRegister}>
+        <button
+          className="btn btn-outline bg-blue-300 hover:bg-blue-500"
+          onClick={handleRegister}
+        >
           登録
         </button>
       </div>

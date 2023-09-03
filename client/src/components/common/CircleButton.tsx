@@ -1,6 +1,6 @@
 const CircleButton = () => {
   return (
-    <button className="btn btn-circle btn-outline btn-success">
+    <button className="btn btn-circle btn-outline bg-green-300 hover:bg-green-500">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"

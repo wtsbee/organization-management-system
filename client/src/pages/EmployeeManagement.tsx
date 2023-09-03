@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import { useApolloClient, useQuery } from "@apollo/client";
+import CircleButton from "@/components/common/CircleButton";
 import DepartmentTree from "@/components//department/DepartmentTree";
 import EmployeeList from "@/components//employee/EmployeeList";
 import { GET_DEPARTMENT_TREE } from "@/queries/departmentQueries";
@@ -53,6 +55,11 @@ const EmployeeManagement = () => {
           </div>
         </>
       )}
+      <Link to="/employee/new">
+        <div className="fixed top-20 right-20">
+          <CircleButton />
+        </div>
+      </Link>
     </>
   );
 };
