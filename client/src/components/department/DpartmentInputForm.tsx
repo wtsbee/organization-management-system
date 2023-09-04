@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation } from "@apollo/client";
 import { DepartmentTree as Department } from "@/types/department.ts";
 import { CREATE_DEPARTMENT } from "@/mutations/departmentMutations";
@@ -6,17 +6,32 @@ import { CREATE_DEPARTMENT } from "@/mutations/departmentMutations";
 type Props = {
   departments: Department[];
   value: {
-    selectedDepartment: string;
-    setSelectedDepartment: React.Dispatch<React.SetStateAction<string>>;
+    selectedDepartmentName: string;
+    selectedDepartmentCode: string;
+    selectedDepartmentAncestry: string;
+    setSelectedDepartmentAncestry: React.Dispatch<React.SetStateAction<string>>;
   };
   refetch: () => void;
+  editableFlag: boolean;
 };
 
-const DpartmentInputForm = ({ departments, value, refetch }: Props) => {
+const DpartmentInputForm = ({
+  departments,
+  value,
+  refetch,
+  editableFlag,
+}: Props) => {
   const [createDepartment] = useMutation(CREATE_DEPARTMENT);
-  const [name, setName] = useState("");
-  const [code, setCode] = useState("");
-  const { selectedDepartment, setSelectedDepartment } = { ...value };
+  const {
+    selectedDepartmentName,
+    selectedDepartmentCode,
+    selectedDepartmentAncestry,
+    setSelectedDepartmentAncestry,
+  } = {
+    ...value,
+  };
+  const [name, setName] = useState(selectedDepartmentName);
+  const [code, setCode] = useState(selectedDepartmentCode);
 
   const editDepartmentName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -29,17 +44,17 @@ const DpartmentInputForm = ({ departments, value, refetch }: Props) => {
   const resetInputForm = () => {
     setName("");
     setCode("");
-    setSelectedDepartment("");
+    setSelectedDepartmentAncestry("");
   };
 
   const handleRegisteration = async () => {
-    if (selectedDepartment !== "") {
+    if (selectedDepartmentAncestry !== "") {
       await createDepartment({
         variables: {
           input: {
             name,
             code,
-            ancestry: selectedDepartment,
+            ancestry: selectedDepartmentAncestry,
             versionId: 1,
           },
         },
@@ -49,8 +64,16 @@ const DpartmentInputForm = ({ departments, value, refetch }: Props) => {
     }
   };
 
+  const handleUpdate = () => {
+    // TODO：部署更新APIを呼び出す
+  };
+
+  const handleDeletion = () => {
+    // TODO：部署削除APIを呼び出す
+  };
+
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedDepartment(e.target.value);
+    setSelectedDepartmentAncestry(e.target.value);
   };
 
   const generateAncestry = (department: Department): string => {
@@ -65,7 +88,7 @@ const DpartmentInputForm = ({ departments, value, refetch }: Props) => {
       <option
         key={department.id}
         value={generateAncestry(department)}
-        selected={generateAncestry(department) == selectedDepartment}
+        selected={generateAncestry(department) == selectedDepartmentAncestry}
       >
         {department.name}
       </option>
@@ -74,6 +97,11 @@ const DpartmentInputForm = ({ departments, value, refetch }: Props) => {
       )}
     </>
   );
+
+  useEffect(() => {
+    setName(selectedDepartmentName);
+    setCode(selectedDepartmentCode);
+  }, [selectedDepartmentName, selectedDepartmentCode]);
 
   return (
     <>
@@ -116,9 +144,29 @@ const DpartmentInputForm = ({ departments, value, refetch }: Props) => {
         </select>
       </div>
       <div className="my-5">
-        <button onClick={handleRegisteration} className="btn btn-primary">
-          登録
-        </button>
+        {editableFlag ? (
+          <>
+            <button
+              onClick={handleUpdate}
+              className="btn btn-outline bg-yellow-300 hover:bg-yellow-500 mr-1"
+            >
+              編集
+            </button>
+            <button
+              onClick={handleDeletion}
+              className="btn btn-outline bg-red-300 hover:bg-red-500"
+            >
+              削除
+            </button>
+          </>
+        ) : (
+          <button
+            onClick={handleRegisteration}
+            className="btn btn-outline bg-blue-300 hover:bg-blue-500"
+          >
+            登録
+          </button>
+        )}
       </div>
     </>
   );

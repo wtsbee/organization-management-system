@@ -6,10 +6,17 @@ import { GET_DEPARTMENT_TREE } from "@/queries/departmentQueries";
 import { DepartmentTree as Department } from "@/types/department.ts";
 
 const DepartmentManagement = () => {
-  const [selectedDepartment, setSelectedDepartment] = useState("");
+  const [editableFlag, setEditableFlag] = useState(false);
+  const [selectedDepartmentName, setSelectedDepartmentName] = useState("");
+  const [selectedDepartmentCode, setSelectedDepartmentCode] = useState("");
+  const [selectedDepartmentAncestry, setSelectedDepartmentAncestry] =
+    useState("");
+
   const value = {
-    selectedDepartment,
-    setSelectedDepartment,
+    selectedDepartmentName,
+    selectedDepartmentCode,
+    selectedDepartmentAncestry,
+    setSelectedDepartmentAncestry,
   };
 
   // APIからデータを取得
@@ -27,7 +34,10 @@ const DepartmentManagement = () => {
       ? department.id.toString()
       : `${department.ancestry}/${department.id}`;
 
-    setSelectedDepartment(ancestry);
+    setSelectedDepartmentName(department.name);
+    setSelectedDepartmentCode(department.code);
+    setSelectedDepartmentAncestry(ancestry);
+    setEditableFlag(true);
   };
 
   return (
@@ -49,6 +59,7 @@ const DepartmentManagement = () => {
                 departments={departments}
                 value={value}
                 refetch={refetch}
+                editableFlag={editableFlag}
               />
             </div>
           </div>
