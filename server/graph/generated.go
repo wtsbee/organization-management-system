@@ -79,6 +79,7 @@ type ComplexityRoot struct {
 		CreateTodo       func(childComplexity int, input model.NewTodo) int
 		CreateVersion    func(childComplexity int, input model.NewVersion) int
 		DeleteVersion    func(childComplexity int, id uint) int
+		UpdateDepartment func(childComplexity int, input model.UpdateDepartment) int
 		UpdateVersion    func(childComplexity int, input model.UpdateVersion) int
 	}
 
@@ -125,6 +126,7 @@ type MutationResolver interface {
 	CreateEmployee(ctx context.Context, input model.NewEmployee) (*model.Employee, error)
 	CreateVersion(ctx context.Context, input model.NewVersion) (*model.Version, error)
 	DeleteVersion(ctx context.Context, id uint) (bool, error)
+	UpdateDepartment(ctx context.Context, input model.UpdateDepartment) (*model.Department, error)
 	UpdateVersion(ctx context.Context, input model.UpdateVersion) (*model.Version, error)
 }
 type QueryResolver interface {
@@ -337,6 +339,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.DeleteVersion(childComplexity, args["id"].(uint)), true
 
+	case "Mutation.updateDepartment":
+		if e.complexity.Mutation.UpdateDepartment == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateDepartment_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateDepartment(childComplexity, args["input"].(model.UpdateDepartment)), true
+
 	case "Mutation.updateVersion":
 		if e.complexity.Mutation.UpdateVersion == nil {
 			break
@@ -528,6 +542,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputNewEmployee,
 		ec.unmarshalInputNewTodo,
 		ec.unmarshalInputNewVersion,
+		ec.unmarshalInputUpdateDepartment,
 		ec.unmarshalInputUpdateVersion,
 	)
 	first := true
@@ -717,6 +732,21 @@ func (ec *executionContext) field_Mutation_deleteVersion_args(ctx context.Contex
 		}
 	}
 	args["id"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_updateDepartment_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.UpdateDepartment
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNUpdateDepartment2my_packageᚋgraphᚋmodelᚐUpdateDepartment(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
 	return args, nil
 }
 
@@ -1973,6 +2003,77 @@ func (ec *executionContext) fieldContext_Mutation_deleteVersion(ctx context.Cont
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Mutation_deleteVersion_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_updateDepartment(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_updateDepartment(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateDepartment(rctx, fc.Args["input"].(model.UpdateDepartment))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.Department)
+	fc.Result = res
+	return ec.marshalNDepartment2ᚖmy_packageᚋgraphᚋmodelᚐDepartment(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_updateDepartment(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Department_id(ctx, field)
+			case "name":
+				return ec.fieldContext_Department_name(ctx, field)
+			case "code":
+				return ec.fieldContext_Department_code(ctx, field)
+			case "ancestry":
+				return ec.fieldContext_Department_ancestry(ctx, field)
+			case "versionId":
+				return ec.fieldContext_Department_versionId(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_Department_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_Department_updatedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Department", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_updateDepartment_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -5169,6 +5270,62 @@ func (ec *executionContext) unmarshalInputNewVersion(ctx context.Context, obj in
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputUpdateDepartment(ctx context.Context, obj interface{}) (model.UpdateDepartment, error) {
+	var it model.UpdateDepartment
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"id", "name", "code", "ancestry"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "id":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+			data, err := ec.unmarshalNID2uint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ID = data
+		case "name":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Name = data
+		case "code":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("code"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Code = data
+		case "ancestry":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ancestry"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Ancestry = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputUpdateVersion(ctx context.Context, obj interface{}) (model.UpdateVersion, error) {
 	var it model.UpdateVersion
 	asMap := map[string]interface{}{}
@@ -5466,6 +5623,13 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		case "deleteVersion":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_deleteVersion(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "updateDepartment":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_updateDepartment(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
@@ -6485,6 +6649,11 @@ func (ec *executionContext) marshalNTodo2ᚖmy_packageᚋgraphᚋmodelᚐTodo(ct
 		return graphql.Null
 	}
 	return ec._Todo(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNUpdateDepartment2my_packageᚋgraphᚋmodelᚐUpdateDepartment(ctx context.Context, v interface{}) (model.UpdateDepartment, error) {
+	res, err := ec.unmarshalInputUpdateDepartment(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalNUpdateVersion2my_packageᚋgraphᚋmodelᚐUpdateVersion(ctx context.Context, v interface{}) (model.UpdateVersion, error) {

@@ -13,6 +13,7 @@ type IDepartmentUsecase interface {
 	CreateDepartment(department model.NewDepartment) (*model.Department, error)
 	GetDepartments(versionId uint) ([]*model.Department, error)
 	GetDepartmentTree(versionId uint) ([]*model.DepartmentTree, error)
+	UpdateDepartment(department model.UpdateDepartment) (*model.Department, error)
 }
 
 type departmentUsecase struct {
@@ -76,4 +77,18 @@ func (du *departmentUsecase) GetDepartmentTree(versionId uint) ([]*model.Departm
 	}
 	log.Println("GetDepartmentTree success")
 	return rootDepartments, nil
+}
+
+func (du *departmentUsecase) UpdateDepartment(updateDepartment model.UpdateDepartment) (*model.Department, error) {
+	var newDepartment model.Department
+	if err := du.dr.GetDepartmentById(&newDepartment, updateDepartment.ID); err != nil {
+		log.Println("UpdateDepartment error", err)
+		return &model.Department{}, err
+	}
+	if err := du.dr.UpdateDepartment(&newDepartment, updateDepartment); err != nil {
+		log.Println("UpdateDepartment error", err)
+		return &model.Department{}, err
+	}
+	log.Println("UpdateDepartment success")
+	return &newDepartment, nil
 }

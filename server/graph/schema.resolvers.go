@@ -49,6 +49,11 @@ func (r *mutationResolver) DeleteVersion(ctx context.Context, id uint) (bool, er
 	return r.vu.DeleteVersion(id)
 }
 
+// UpdateDepartment is the resolver for the updateDepartment field.
+func (r *mutationResolver) UpdateDepartment(ctx context.Context, input model.UpdateDepartment) (*model.Department, error) {
+	return r.du.UpdateDepartment(input)
+}
+
 // UpdateVersion is the resolver for the updateVersion field.
 func (r *mutationResolver) UpdateVersion(ctx context.Context, input model.UpdateVersion) (*model.Version, error) {
 	return r.vu.UpdateVersion(input)

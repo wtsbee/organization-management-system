@@ -90,6 +90,13 @@ input NewVersion {
   startedAt: DateTime!
 }
 
+input UpdateDepartment {
+  id: ID!
+  name: String!
+  code: String!
+  ancestry: String!
+}
+
 input UpdateVersion {
   id: ID!
   name: String!
@@ -102,5 +109,6 @@ type Mutation {
   createEmployee(input: NewEmployee!): Employee!
   createVersion(input: NewVersion!): Version!
   deleteVersion(id: ID!): Boolean!
+  updateDepartment(input: UpdateDepartment!): Department!
   updateVersion(input: UpdateVersion!): Version!
 }

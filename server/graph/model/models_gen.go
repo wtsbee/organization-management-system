@@ -36,6 +36,13 @@ type Todo struct {
 	User *User  `json:"user"`
 }
 
+type UpdateDepartment struct {
+	ID       uint   `json:"id"`
+	Name     string `json:"name"`
+	Code     string `json:"code"`
+	Ancestry string `json:"ancestry"`
+}
+
 type UpdateVersion struct {
 	ID        uint      `json:"id"`
 	Name      string    `json:"name"`
