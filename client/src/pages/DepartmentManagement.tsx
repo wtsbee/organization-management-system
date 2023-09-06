@@ -7,12 +7,14 @@ import { DepartmentTree as Department } from "@/types/department.ts";
 
 const DepartmentManagement = () => {
   const [editableFlag, setEditableFlag] = useState(false);
+  const [selectedDepartmentId, setSelectedDepartmentId] = useState<number>();
   const [selectedDepartmentName, setSelectedDepartmentName] = useState("");
   const [selectedDepartmentCode, setSelectedDepartmentCode] = useState("");
   const [selectedDepartmentAncestry, setSelectedDepartmentAncestry] =
     useState("");
 
   const value = {
+    selectedDepartmentId,
     selectedDepartmentName,
     selectedDepartmentCode,
     selectedDepartmentAncestry,
@@ -32,8 +34,9 @@ const DepartmentManagement = () => {
   const handeleSelectDepartment = (department: Department) => {
     const ancestry = !department.ancestry
       ? department.id.toString()
-      : `${department.ancestry}/${department.id}`;
+      : department.ancestry;
 
+    setSelectedDepartmentId(department.id);
     setSelectedDepartmentName(department.name);
     setSelectedDepartmentCode(department.code);
     setSelectedDepartmentAncestry(ancestry);

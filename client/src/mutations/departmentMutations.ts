@@ -11,3 +11,15 @@ export const CREATE_DEPARTMENT = gql`
     }
   }
 `;
+
+export const UPDATE_DEPARTMENT = gql`
+  mutation UpdateDepartment($input: UpdateDepartment!) {
+    updateDepartment(input: $input) {
+      id
+      name
+      code
+      ancestry
+      versionId
+    }
+  }
+`;

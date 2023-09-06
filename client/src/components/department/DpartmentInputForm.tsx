@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { useMutation } from "@apollo/client";
 import { DepartmentTree as Department } from "@/types/department.ts";
-import { CREATE_DEPARTMENT } from "@/mutations/departmentMutations";
+import {
+  CREATE_DEPARTMENT,
+  UPDATE_DEPARTMENT,
+} from "@/mutations/departmentMutations";
 
 type Props = {
   departments: Department[];
   value: {
+    selectedDepartmentId: number | undefined;
     selectedDepartmentName: string;
     selectedDepartmentCode: string;
     selectedDepartmentAncestry: string;
@@ -22,7 +26,9 @@ const DpartmentInputForm = ({
   editableFlag,
 }: Props) => {
   const [createDepartment] = useMutation(CREATE_DEPARTMENT);
+  const [updateDepartment] = useMutation(UPDATE_DEPARTMENT);
   const {
+    selectedDepartmentId,
     selectedDepartmentName,
     selectedDepartmentCode,
     selectedDepartmentAncestry,
@@ -64,8 +70,21 @@ const DpartmentInputForm = ({
     }
   };
 
-  const handleUpdate = () => {
-    // TODO：部署更新APIを呼び出す
+  const handleUpdate = async () => {
+    if (selectedDepartmentAncestry !== "") {
+      await updateDepartment({
+        variables: {
+          input: {
+            id: selectedDepartmentId,
+            name,
+            code,
+            ancestry: selectedDepartmentAncestry,
+          },
+        },
+      });
+      resetInputForm();
+      refetch();
+    }
   };
 
   const handleDeletion = () => {
