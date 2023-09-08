@@ -78,6 +78,7 @@ type ComplexityRoot struct {
 		CreateEmployee   func(childComplexity int, input model.NewEmployee) int
 		CreateTodo       func(childComplexity int, input model.NewTodo) int
 		CreateVersion    func(childComplexity int, input model.NewVersion) int
+		DeleteDepartment func(childComplexity int, id uint) int
 		DeleteVersion    func(childComplexity int, id uint) int
 		UpdateDepartment func(childComplexity int, input model.UpdateDepartment) int
 		UpdateVersion    func(childComplexity int, input model.UpdateVersion) int
@@ -125,6 +126,7 @@ type MutationResolver interface {
 	CreateDepartment(ctx context.Context, input model.NewDepartment) (*model.Department, error)
 	CreateEmployee(ctx context.Context, input model.NewEmployee) (*model.Employee, error)
 	CreateVersion(ctx context.Context, input model.NewVersion) (*model.Version, error)
+	DeleteDepartment(ctx context.Context, id uint) (bool, error)
 	DeleteVersion(ctx context.Context, id uint) (bool, error)
 	UpdateDepartment(ctx context.Context, input model.UpdateDepartment) (*model.Department, error)
 	UpdateVersion(ctx context.Context, input model.UpdateVersion) (*model.Version, error)
@@ -326,6 +328,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.CreateVersion(childComplexity, args["input"].(model.NewVersion)), true
+
+	case "Mutation.deleteDepartment":
+		if e.complexity.Mutation.DeleteDepartment == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteDepartment_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteDepartment(childComplexity, args["id"].(uint)), true
 
 	case "Mutation.deleteVersion":
 		if e.complexity.Mutation.DeleteVersion == nil {
@@ -717,6 +731,21 @@ func (ec *executionContext) field_Mutation_createVersion_args(ctx context.Contex
 		}
 	}
 	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_deleteDepartment_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 uint
+	if tmp, ok := rawArgs["id"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+		arg0, err = ec.unmarshalNID2uint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
 	return args, nil
 }
 
@@ -1948,6 +1977,61 @@ func (ec *executionContext) fieldContext_Mutation_createVersion(ctx context.Cont
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Mutation_createVersion_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_deleteDepartment(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_deleteDepartment(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().DeleteDepartment(rctx, fc.Args["id"].(uint))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_deleteDepartment(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_deleteDepartment_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -5616,6 +5700,13 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		case "createVersion":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_createVersion(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "deleteDepartment":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_deleteDepartment(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++

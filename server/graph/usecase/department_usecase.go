@@ -11,6 +11,7 @@ import (
 // インターフェース
 type IDepartmentUsecase interface {
 	CreateDepartment(department model.NewDepartment) (*model.Department, error)
+	DeleteDepartment(id uint) (bool, error)
 	GetDepartments(versionId uint) ([]*model.Department, error)
 	GetDepartmentTree(versionId uint) ([]*model.DepartmentTree, error)
 	UpdateDepartment(department model.UpdateDepartment) (*model.Department, error)
@@ -33,6 +34,15 @@ func (du *departmentUsecase) CreateDepartment(department model.NewDepartment) (*
 	}
 	log.Println("CreateDepartment success")
 	return &NewDepartment, nil
+}
+
+func (du *departmentUsecase) DeleteDepartment(id uint) (bool, error) {
+	if err := du.dr.DeleteDepartment(id); err != nil {
+		log.Println("DeleteDepartment error", err)
+		return false, err
+	}
+	log.Println("DeleteDepartment success")
+	return true, nil
 }
 
 func (du *departmentUsecase) GetDepartments(versionId uint) ([]*model.Department, error) {

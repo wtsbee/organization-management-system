@@ -44,6 +44,11 @@ func (r *mutationResolver) CreateVersion(ctx context.Context, input model.NewVer
 	return r.vu.CreateVersion(input)
 }
 
+// DeleteDepartment is the resolver for the deleteDepartment field.
+func (r *mutationResolver) DeleteDepartment(ctx context.Context, id uint) (bool, error) {
+	return r.du.DeleteDepartment(id)
+}
+
 // DeleteVersion is the resolver for the deleteVersion field.
 func (r *mutationResolver) DeleteVersion(ctx context.Context, id uint) (bool, error) {
 	return r.vu.DeleteVersion(id)

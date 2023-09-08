@@ -10,6 +10,7 @@ import (
 // インターフェース
 type IDepartmentRepository interface {
 	CreateDepartment(department *model.Department) error
+	DeleteDepartment(id uint) error
 	GetDepartmentById(department *model.Department, id uint) error
 	GetDepartmentsByVersionId(departments *[]*model.Department, versionId uint) error
 	UpdateDepartment(department *model.Department, updateDepartment model.UpdateDepartment) error
@@ -26,6 +27,14 @@ func NewDepartmentRepository(db *gorm.DB) IDepartmentRepository {
 
 func (dr *departmentRepository) CreateDepartment(department *model.Department) error {
 	if err := dr.db.Create(department).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (dr *departmentRepository) DeleteDepartment(id uint) error {
+	err := dr.db.Delete(&model.Department{}, id).Error
+	if err != nil {
 		return err
 	}
 	return nil
