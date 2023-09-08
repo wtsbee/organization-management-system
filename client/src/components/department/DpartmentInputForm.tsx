@@ -3,6 +3,7 @@ import { useMutation } from "@apollo/client";
 import { DepartmentTree as Department } from "@/types/department.ts";
 import {
   CREATE_DEPARTMENT,
+  DELETE_DEPARTMENT,
   UPDATE_DEPARTMENT,
 } from "@/mutations/departmentMutations";
 
@@ -26,6 +27,7 @@ const DpartmentInputForm = ({
   editableFlag,
 }: Props) => {
   const [createDepartment] = useMutation(CREATE_DEPARTMENT);
+  const [deleteDepartment] = useMutation(DELETE_DEPARTMENT);
   const [updateDepartment] = useMutation(UPDATE_DEPARTMENT);
   const {
     selectedDepartmentId,
@@ -87,8 +89,17 @@ const DpartmentInputForm = ({
     }
   };
 
-  const handleDeletion = () => {
+  const handleDeletion = async () => {
     // TODO：部署削除APIを呼び出す
+    console.log(selectedDepartmentId);
+
+    await deleteDepartment({
+      variables: {
+        id: selectedDepartmentId,
+      },
+    });
+    resetInputForm();
+    refetch();
   };
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

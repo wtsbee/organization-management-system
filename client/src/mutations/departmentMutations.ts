@@ -12,6 +12,12 @@ export const CREATE_DEPARTMENT = gql`
   }
 `;
 
+export const DELETE_DEPARTMENT = gql`
+  mutation DeteleDepartment($id: ID!) {
+    deleteDepartment(id: $id)
+  }
+`;
+
 export const UPDATE_DEPARTMENT = gql`
   mutation UpdateDepartment($input: UpdateDepartment!) {
     updateDepartment(input: $input) {
