@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, version } from "react";
 import { useQuery } from "@apollo/client";
 import DpartmentInputForm from "@/components//department/DpartmentInputForm";
 import DepartmentTree from "@/components//department/DepartmentTree";
 import { GET_DEPARTMENT_TREE } from "@/queries/departmentQueries";
+import { GET_VERSIONS } from "@/queries/versionQueries";
 import { DepartmentTree as Department } from "@/types/department.ts";
+import { Version } from "@/types/version.ts";
 
 const DepartmentManagement = () => {
   const [editableFlag, setEditableFlag] = useState(false);
@@ -12,6 +14,7 @@ const DepartmentManagement = () => {
   const [selectedDepartmentCode, setSelectedDepartmentCode] = useState("");
   const [selectedDepartmentAncestry, setSelectedDepartmentAncestry] =
     useState("");
+  const [selectedVersionId, setSelectedVersionId] = useState<number>();
 
   const value = {
     selectedDepartmentId,
@@ -31,6 +34,15 @@ const DepartmentManagement = () => {
 
   const departments = data?.getDepartmentTree;
 
+  const { data: versionData } = useQuery<{ getVersions: Version[] }>(
+    GET_VERSIONS,
+    {
+      fetchPolicy: "no-cache",
+    }
+  );
+
+  const versions = versionData?.getVersions;
+
   const handeleSelectDepartment = (department: Department) => {
     const ancestry = !department.ancestry
       ? department.id.toString()
@@ -43,6 +55,12 @@ const DepartmentManagement = () => {
     setEditableFlag(true);
   };
 
+  const handleSelectVersionChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSelectedVersionId(parseInt(e.target.value));
+  };
+
   return (
     <>
       <h1 className="text-xl font-bold">部署管理</h1>
@@ -50,6 +68,20 @@ const DepartmentManagement = () => {
         <>
           <div className="mt-5 flex gap-3">
             <div className="w-1/3 card bg-neutral-200">
+              <div className="mx-6 mt-5 mb-1">
+                <select
+                  onChange={handleSelectVersionChange}
+                  className="select select-bordered font-normal"
+                  value={selectedVersionId}
+                >
+                  {versions?.map((version) => (
+                    <option key={version.id} value={version.id}>
+                      {version.name}
+                      {version.status == "current" && "（現在のバージョン）"}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div className="menu">
                 <DepartmentTree
                   departments={departments}
