@@ -60,7 +60,7 @@ const NewEmployee = () => {
             <br />
             <input
               type="text"
-              placeholder="バージョン名を入力してください"
+              placeholder="姓を入力してください"
               className="input input-bordered w-full max-w-xs mt-1"
               value={lastName}
               onChange={editLastName}
@@ -71,7 +71,7 @@ const NewEmployee = () => {
             <br />
             <input
               type="text"
-              placeholder="バージョン名を入力してください"
+              placeholder="名を入力してください"
               className="input input-bordered w-full max-w-xs mt-1"
               value={firstName}
               onChange={editFistName}
