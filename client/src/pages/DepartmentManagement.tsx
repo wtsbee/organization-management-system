@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import DpartmentInputForm from "@/components/department/DpartmentInputForm";
 import DepartmentTree from "@/components/department/DepartmentTree";
@@ -31,15 +31,6 @@ const DepartmentManagement = () => {
   };
 
   // APIからデータを取得
-  const { data, error, loading, refetch } = useQuery<{
-    getDepartmentTree: Department[];
-  }>(GET_DEPARTMENT_TREE, {
-    variables: { id: 1 },
-    fetchPolicy: "no-cache",
-  });
-
-  const departments = data?.getDepartmentTree;
-
   const {
     data: versionData,
     error: versionError,
@@ -49,6 +40,26 @@ const DepartmentManagement = () => {
   });
 
   const versions = versionData?.getVersions;
+
+  const currentVersion = versions?.find(
+    (version: Version) => version.status == "current"
+  );
+
+  useEffect(() => {
+    if (!versionLoading && versionData && currentVersion) {
+      setSelectedVersionId(currentVersion.id);
+    }
+  }, [versionLoading, versionData, currentVersion]);
+
+  const { data, error, loading, refetch } = useQuery<{
+    getDepartmentTree: Department[];
+  }>(GET_DEPARTMENT_TREE, {
+    variables: { id: versions ? selectedVersionId : null },
+    fetchPolicy: "no-cache",
+    skip: !selectedVersionId,
+  });
+
+  const departments = data?.getDepartmentTree;
 
   const handeleSelectDepartment = (department: Department) => {
     const ancestry = !department.ancestry
