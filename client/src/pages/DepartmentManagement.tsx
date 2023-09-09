@@ -1,11 +1,12 @@
-import { useState, version } from "react";
+import { useState } from "react";
 import { useQuery } from "@apollo/client";
-import DpartmentInputForm from "@/components//department/DpartmentInputForm";
-import DepartmentTree from "@/components//department/DepartmentTree";
+import DpartmentInputForm from "@/components/department/DpartmentInputForm";
+import DepartmentTree from "@/components/department/DepartmentTree";
+import VersionSelectBox from "@/components/version/VersionSelectBox";
 import { GET_DEPARTMENT_TREE } from "@/queries/departmentQueries";
 import { GET_VERSIONS } from "@/queries/versionQueries";
-import { DepartmentTree as Department } from "@/types/department.ts";
-import { Version } from "@/types/version.ts";
+import { DepartmentTree as Department } from "@/types/department";
+import { Version } from "@/types/version";
 
 const DepartmentManagement = () => {
   const [editableFlag, setEditableFlag] = useState(false);
@@ -24,6 +25,11 @@ const DepartmentManagement = () => {
     setSelectedDepartmentAncestry,
   };
 
+  const versionIdState = {
+    selectedVersionId,
+    setSelectedVersionId,
+  };
+
   // APIからデータを取得
   const { data, error, loading, refetch } = useQuery<{
     getDepartmentTree: Department[];
@@ -34,12 +40,13 @@ const DepartmentManagement = () => {
 
   const departments = data?.getDepartmentTree;
 
-  const { data: versionData } = useQuery<{ getVersions: Version[] }>(
-    GET_VERSIONS,
-    {
-      fetchPolicy: "no-cache",
-    }
-  );
+  const {
+    data: versionData,
+    error: versionError,
+    loading: versionLoading,
+  } = useQuery<{ getVersions: Version[] }>(GET_VERSIONS, {
+    fetchPolicy: "no-cache",
+  });
 
   const versions = versionData?.getVersions;
 
@@ -55,32 +62,18 @@ const DepartmentManagement = () => {
     setEditableFlag(true);
   };
 
-  const handleSelectVersionChange = (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setSelectedVersionId(parseInt(e.target.value));
-  };
+  const notLoadingError: boolean =
+    !loading && !error && !versionError && !versionLoading;
 
   return (
     <>
       <h1 className="text-xl font-bold">部署管理</h1>
-      {!loading && !error && departments != undefined && (
+      {notLoadingError && departments != undefined && versions != undefined && (
         <>
           <div className="mt-5 flex gap-3">
             <div className="w-1/3 card bg-neutral-200">
               <div className="mx-6 mt-5 mb-1">
-                <select
-                  onChange={handleSelectVersionChange}
-                  className="select select-bordered font-normal"
-                  value={selectedVersionId}
-                >
-                  {versions?.map((version) => (
-                    <option key={version.id} value={version.id}>
-                      {version.name}
-                      {version.status == "current" && "（現在のバージョン）"}
-                    </option>
-                  ))}
-                </select>
+                <VersionSelectBox versions={versions} state={versionIdState} />
               </div>
               <div className="menu">
                 <DepartmentTree
