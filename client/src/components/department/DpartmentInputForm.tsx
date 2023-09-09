@@ -92,9 +92,6 @@ const DpartmentInputForm = ({
   };
 
   const handleDeletion = async () => {
-    // TODO：部署削除APIを呼び出す
-    console.log(selectedDepartmentId);
-
     await deleteDepartment({
       variables: {
         id: selectedDepartmentId,
