@@ -62,14 +62,10 @@ const DepartmentManagement = () => {
   const departments = data?.getDepartmentTree;
 
   const handeleSelectDepartment = (department: Department) => {
-    const ancestry = !department.ancestry
-      ? department.id.toString()
-      : department.ancestry;
-
     setSelectedDepartmentId(department.id);
     setSelectedDepartmentName(department.name);
     setSelectedDepartmentCode(department.code);
-    setSelectedDepartmentAncestry(ancestry);
+    setSelectedDepartmentAncestry(department.ancestry);
     setEditableFlag(true);
   };
 
@@ -79,31 +75,38 @@ const DepartmentManagement = () => {
   return (
     <>
       <h1 className="text-xl font-bold">部署管理</h1>
-      {notLoadingError && departments != undefined && versions != undefined && (
-        <>
-          <div className="mt-5 flex gap-3">
-            <div className="w-1/3 card bg-neutral-200">
-              <div className="mx-6 mt-5 mb-1">
-                <VersionSelectBox versions={versions} state={versionIdState} />
+      {notLoadingError &&
+        departments != undefined &&
+        versions != undefined &&
+        selectedVersionId != undefined && (
+          <>
+            <div className="mt-5 flex gap-3">
+              <div className="w-1/3 card bg-neutral-200">
+                <div className="mx-6 mt-5 mb-1">
+                  <VersionSelectBox
+                    versions={versions}
+                    state={versionIdState}
+                  />
+                </div>
+                <div className="menu">
+                  <DepartmentTree
+                    departments={departments}
+                    handeleSelectDepartment={handeleSelectDepartment}
+                  />
+                </div>
               </div>
-              <div className="menu">
-                <DepartmentTree
+              <div className="w-2/3 px-2 card bg-neutral-200">
+                <DpartmentInputForm
                   departments={departments}
-                  handeleSelectDepartment={handeleSelectDepartment}
+                  value={value}
+                  refetch={refetch}
+                  editableFlag={editableFlag}
+                  versionId={selectedVersionId}
                 />
               </div>
             </div>
-            <div className="w-2/3 px-2 card bg-neutral-200">
-              <DpartmentInputForm
-                departments={departments}
-                value={value}
-                refetch={refetch}
-                editableFlag={editableFlag}
-              />
-            </div>
-          </div>
-        </>
-      )}
+          </>
+        )}
     </>
   );
 };

@@ -22,6 +22,7 @@ type Props = {
   };
   refetch: () => void;
   editableFlag: boolean;
+  versionId: number;
 };
 
 const DpartmentInputForm = ({
@@ -29,6 +30,7 @@ const DpartmentInputForm = ({
   value,
   refetch,
   editableFlag,
+  versionId,
 }: Props) => {
   const [createDepartment] = useMutation(CREATE_DEPARTMENT);
   const [deleteDepartment] = useMutation(DELETE_DEPARTMENT);
@@ -60,37 +62,33 @@ const DpartmentInputForm = ({
   };
 
   const handleRegisteration = async () => {
-    if (selectedDepartmentAncestry !== "") {
-      await createDepartment({
-        variables: {
-          input: {
-            name,
-            code,
-            ancestry: selectedDepartmentAncestry,
-            versionId: 1,
-          },
+    await createDepartment({
+      variables: {
+        input: {
+          name,
+          code,
+          ancestry: selectedDepartmentAncestry,
+          versionId: versionId,
         },
-      });
-      resetInputForm();
-      refetch();
-    }
+      },
+    });
+    resetInputForm();
+    refetch();
   };
 
   const handleUpdate = async () => {
-    if (selectedDepartmentAncestry !== "") {
-      await updateDepartment({
-        variables: {
-          input: {
-            id: selectedDepartmentId,
-            name,
-            code,
-            ancestry: selectedDepartmentAncestry,
-          },
+    await updateDepartment({
+      variables: {
+        input: {
+          id: selectedDepartmentId,
+          name,
+          code,
+          ancestry: selectedDepartmentAncestry,
         },
-      });
-      resetInputForm();
-      refetch();
-    }
+      },
+    });
+    resetInputForm();
+    refetch();
   };
 
   const handleDeletion = async () => {
