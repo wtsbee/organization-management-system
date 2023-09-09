@@ -13,3 +13,9 @@ export type DepartmentTree = {
   ancestry: string;
   children: DepartmentTree[];
 };
+
+export type SelectListType = {
+  id: number;
+  name: string;
+  ancestry: string;
+};

@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useMutation } from "@apollo/client";
-import { DepartmentTree as Department } from "@/types/department.ts";
+import { DepartmentOptions } from "@/functions/department.ts";
+import {
+  DepartmentTree as Department,
+  SelectListType,
+} from "@/types/department.ts";
 import {
   CREATE_DEPARTMENT,
   DELETE_DEPARTMENT,
@@ -106,27 +110,12 @@ const DpartmentInputForm = ({
     setSelectedDepartmentAncestry(e.target.value);
   };
 
-  const generateAncestry = (department: Department): string => {
+  const generateAncestry = (department: SelectListType): string => {
     const ancestry = !department.ancestry
       ? department.id.toString()
       : `${department.ancestry}/${department.id}`;
     return ancestry;
   };
-
-  const renderSelectOption = (department: Department): JSX.Element => (
-    <>
-      <option
-        key={department.id}
-        value={generateAncestry(department)}
-        selected={generateAncestry(department) == selectedDepartmentAncestry}
-      >
-        {department.name}
-      </option>
-      {department.children.length > 0 && (
-        <>{department.children.map((child) => renderSelectOption(child))}</>
-      )}
-    </>
-  );
 
   useEffect(() => {
     setName(selectedDepartmentName);
@@ -166,11 +155,16 @@ const DpartmentInputForm = ({
         <select
           onChange={handleSelectChange}
           className="select select-bordered font-normal"
+          value={selectedDepartmentAncestry}
         >
-          <option value="" disabled selected>
+          <option value="" disabled>
             部署を選択
           </option>
-          {departments.map((department) => renderSelectOption(department))}
+          {DepartmentOptions(departments).map((department) => (
+            <option key={department.id} value={generateAncestry(department)}>
+              {department.name}
+            </option>
+          ))}
         </select>
       </div>
       <div className="my-5">
