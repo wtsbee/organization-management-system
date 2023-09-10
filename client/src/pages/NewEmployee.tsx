@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
+import VersionSelectBox from "@/components/version/VersionSelectBox";
 import { DepartmentOptions } from "@/functions/department.ts";
 import { CREATE_EMPLOYEE } from "@/mutations/employeeMutations";
 import { GET_DEPARTMENT_TREE } from "@/queries/departmentQueries";
@@ -17,10 +18,19 @@ const NewEmployee = () => {
     useState("");
   const [selectedVersionId, setSelectedVersionId] = useState<number>();
 
+  const versionIdState = {
+    selectedVersionId,
+    setSelectedVersionId,
+  };
+
   const navigate = useNavigate();
 
   // APIから部署一覧データを取得
-  const { data: versionData, loading: versionLoading } = useQuery<{
+  const {
+    data: versionData,
+    error: versionError,
+    loading: versionLoading,
+  } = useQuery<{
     getVersions: Version[];
   }>(GET_VERSIONS, {
     fetchPolicy: "no-cache",
@@ -88,65 +98,77 @@ const NewEmployee = () => {
     return ancestry;
   };
 
+  const notLoadingError: boolean =
+    !loading && !error && !versionError && !versionLoading;
+
   return (
     <>
       <h1 className="text-xl font-bold">社員登録</h1>
-      {!loading && !error && departments != undefined && (
-        <>
-          <div className="mt-5">
-            <label>姓</label>
-            <br />
-            <input
-              type="text"
-              placeholder="姓を入力してください"
-              className="input input-bordered w-full max-w-xs mt-1"
-              value={lastName}
-              onChange={editLastName}
-            />
-          </div>
-          <div className="mt-5">
-            <label>名</label>
-            <br />
-            <input
-              type="text"
-              placeholder="名を入力してください"
-              className="input input-bordered w-full max-w-xs mt-1"
-              value={firstName}
-              onChange={editFistName}
-            />
-          </div>
-          <div className="form-control w-full max-w-xs mt-5">
-            <label className="label">
-              <span>この部署の配下に所属</span>
-            </label>
-            <select
-              onChange={handleSelectChange}
-              className="select select-bordered font-normal"
-              value={selectedDepartmentAncestry}
-            >
-              <option value="" disabled>
-                部署を選択
-              </option>
-              {DepartmentOptions(departments).map((department) => (
-                <option
-                  key={department.id}
-                  value={generateAncestry(department)}
-                >
-                  {department.name}
+      {notLoadingError &&
+        departments != undefined &&
+        versions != undefined &&
+        selectedVersionId != undefined && (
+          <>
+            <div className="mt-5">
+              <label>姓</label>
+              <br />
+              <input
+                type="text"
+                placeholder="姓を入力してください"
+                className="input input-bordered w-full max-w-xs mt-1"
+                value={lastName}
+                onChange={editLastName}
+              />
+            </div>
+            <div className="mt-5">
+              <label>名</label>
+              <br />
+              <input
+                type="text"
+                placeholder="名を入力してください"
+                className="input input-bordered w-full max-w-xs mt-1"
+                value={firstName}
+                onChange={editFistName}
+              />
+            </div>
+            <div className="mt-5">
+              <label className="label">
+                <span>登録するバージョン</span>
+              </label>
+              <VersionSelectBox versions={versions} state={versionIdState} />
+            </div>
+            <div className="form-control w-full max-w-xs mt-5">
+              <label className="label">
+                <span>この部署の配下に所属</span>
+              </label>
+              <select
+                onChange={handleSelectChange}
+                className="select select-bordered font-normal"
+                value={selectedDepartmentAncestry}
+              >
+                <option value="" disabled>
+                  部署を選択
                 </option>
-              ))}
-            </select>
-          </div>
-          <div className="mt-5">
-            <button
-              className="btn btn-outline bg-blue-300 hover:bg-blue-500"
-              onClick={handleRegister}
-            >
-              登録
-            </button>
-          </div>
-        </>
-      )}
+                {DepartmentOptions(departments).map((department) => (
+                  <option
+                    key={department.id}
+                    value={generateAncestry(department)}
+                  >
+                    {department.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="mt-5">
+              <button
+                className="btn btn-outline bg-blue-300 hover:bg-blue-500"
+                onClick={handleRegister}
+              >
+                登録
+              </button>
+            </div>
+          </>
+        )}
     </>
   );
 };
