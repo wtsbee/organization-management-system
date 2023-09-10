@@ -1,27 +1,51 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
+import { DepartmentOptions } from "@/functions/department.ts";
 import { CREATE_EMPLOYEE } from "@/mutations/employeeMutations";
-import { GET_DEPARTMENTS } from "@/queries/departmentQueries";
-import { Department } from "@/types/department.ts";
+import { GET_DEPARTMENT_TREE } from "@/queries/departmentQueries";
+import { GET_VERSIONS } from "@/queries/versionQueries";
+import { DepartmentTree, SelectListType } from "@/types/department";
+import { Version } from "@/types/version";
 
 const NewEmployee = () => {
   const [createEmployee] = useMutation(CREATE_EMPLOYEE);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [selectedDepartmentId, setSelectedDepartmentId] = useState<number>(0);
+  const [selectedDepartmentAncestry, setSelectedDepartmentAncestry] =
+    useState("");
+  const [selectedVersionId, setSelectedVersionId] = useState<number>();
 
   const navigate = useNavigate();
 
   // APIから部署一覧データを取得
-  const { data, error, loading } = useQuery<{
-    getDepartments: Department[];
-  }>(GET_DEPARTMENTS, {
-    variables: { id: 1 },
+  const { data: versionData, loading: versionLoading } = useQuery<{
+    getVersions: Version[];
+  }>(GET_VERSIONS, {
     fetchPolicy: "no-cache",
   });
 
-  const departments = data?.getDepartments;
+  const versions = versionData?.getVersions;
+
+  const currentVersion = versions?.find(
+    (version: Version) => version.status == "current"
+  );
+  useEffect(() => {
+    if (!versionLoading && versionData && currentVersion) {
+      setSelectedVersionId(currentVersion.id);
+    }
+  }, [versionLoading, versionData, currentVersion]);
+
+  const { data, error, loading } = useQuery<{
+    getDepartmentTree: DepartmentTree[];
+  }>(GET_DEPARTMENT_TREE, {
+    variables: { id: versions ? selectedVersionId : null },
+    fetchPolicy: "no-cache",
+    skip: !selectedVersionId,
+  });
+
+  const departments = data?.getDepartmentTree;
 
   const editFistName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFirstName(e.target.value);
@@ -43,11 +67,25 @@ const NewEmployee = () => {
         },
       });
       navigate("/employee");
+    } else {
+      alert("部署を選択してください");
     }
   };
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedDepartmentId(Number(e.target.value));
+    const selectedValue = e.target.value;
+    const ancestryAndDepartmentId = selectedValue.split("/");
+    const departmentId =
+      ancestryAndDepartmentId[ancestryAndDepartmentId.length - 1];
+    setSelectedDepartmentId(parseInt(departmentId));
+    setSelectedDepartmentAncestry(e.target.value);
+  };
+
+  const generateAncestry = (department: SelectListType): string => {
+    const ancestry = !department.ancestry
+      ? department.id.toString()
+      : `${department.ancestry}/${department.id}`;
+    return ancestry;
   };
 
   return (
@@ -84,12 +122,16 @@ const NewEmployee = () => {
             <select
               onChange={handleSelectChange}
               className="select select-bordered font-normal"
+              value={selectedDepartmentAncestry}
             >
-              <option value="0" disabled selected>
+              <option value="" disabled>
                 部署を選択
               </option>
-              {departments.map((department) => (
-                <option value={department.id} key={department.id}>
+              {DepartmentOptions(departments).map((department) => (
+                <option
+                  key={department.id}
+                  value={generateAncestry(department)}
+                >
                   {department.name}
                 </option>
               ))}
