@@ -92,6 +92,7 @@ const DepartmentManagement = () => {
                   <DepartmentTree
                     departments={departments}
                     handeleSelectDepartment={handeleSelectDepartment}
+                    selectedDepartmentId={selectedDepartmentId}
                   />
                 </div>
               </div>
