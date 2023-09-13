@@ -14,6 +14,7 @@ import { Version } from "@/types/version";
 
 const EmployeeManagement = () => {
   const [employees, setEmployees] = useState<Employee[]>();
+  const [selectedDepartmentId, setSelectedDepartmentId] = useState<number>();
   const [selectedVersionId, setSelectedVersionId] = useState<number>();
 
   const versionIdState = {
@@ -64,6 +65,7 @@ const EmployeeManagement = () => {
       fetchPolicy: "no-cache",
     });
     setEmployees(resData?.getEmployees);
+    setSelectedDepartmentId(department.id);
   };
 
   const notLoadingError: boolean =
@@ -89,6 +91,7 @@ const EmployeeManagement = () => {
                   <DepartmentTree
                     departments={departments}
                     handeleSelectDepartment={handeleSelectDepartment}
+                    selectedDepartmentId={selectedDepartmentId}
                   />
                 </div>
               </div>
