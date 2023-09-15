@@ -2,6 +2,7 @@ package repository
 
 import (
 	"my_package/graph/model"
+	"strconv"
 
 	"gorm.io/gorm"
 )
@@ -28,8 +29,18 @@ func (er *employeeRepository) CreateEmployee(employee *model.Employee) error {
 	return nil
 }
 
-func (er *employeeRepository) GetEmployeesByDepartmentId(Employees *[]*model.Employee, departmentId uint) error {
-	err := er.db.Where("department_id = ?", departmentId).Find(Employees).Error
+func (er *employeeRepository) GetEmployeesByDepartmentId(employees *[]*model.Employee, departmentId uint) error {
+	var departments []model.Department
+	stringDeparmentId := strconv.FormatUint(uint64(departmentId), 10)
+	err := er.db.Where("ancestry = ? OR ancestry LIKE ? OR ancestry LIKE ? OR ancestry LIKE ?", departmentId, stringDeparmentId+"/%", "%/"+stringDeparmentId+"/%", "%/"+stringDeparmentId).Find(&departments).Error
+	if err != nil {
+		return err
+	}
+	departmentIdList := []uint{departmentId}
+	for _, v := range departments {
+		departmentIdList = append(departmentIdList, v.ID)
+	}
+	err = er.db.Where("department_id in ?", departmentIdList).Find(employees).Error
 	if err != nil {
 		return err
 	}
