@@ -72,6 +72,13 @@ const DepartmentManagement = () => {
   const notLoadingError: boolean =
     !loading && !error && !versionError && !versionLoading;
 
+  const resetInputForm = () => {
+    setSelectedDepartmentName("");
+    setSelectedDepartmentCode("");
+    setSelectedDepartmentAncestry("");
+    setEditableFlag(false);
+  };
+
   return (
     <>
       <h1 className="text-xl font-bold">部署管理</h1>
@@ -82,11 +89,17 @@ const DepartmentManagement = () => {
           <>
             <div className="mt-5 flex gap-3">
               <div className="w-1/3 card bg-neutral-200">
-                <div className="mx-6 mt-5 mb-1">
+                <div className="mx-6 mt-5 mb-1 flex justify-between">
                   <VersionSelectBox
                     versions={versions}
                     state={versionIdState}
                   />
+                  <button
+                    onClick={resetInputForm}
+                    className="btn btn-outline bg-green-300 hover:bg-green-500 mr-1"
+                  >
+                    新規作成
+                  </button>
                 </div>
                 <div className="menu">
                   <DepartmentTree
