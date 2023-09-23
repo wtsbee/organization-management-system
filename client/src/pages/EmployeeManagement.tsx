@@ -96,7 +96,10 @@ const EmployeeManagement = () => {
                 </div>
               </div>
               <div className="w-2/3 card bg-neutral-200 gap-5">
-                <EmployeeList employees={employees} />
+                <EmployeeList
+                  employees={employees}
+                  versionId={selectedVersionId}
+                />
               </div>
             </div>
           </>

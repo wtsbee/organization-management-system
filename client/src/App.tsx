@@ -10,6 +10,7 @@ import OrganizationChart from "./pages/OrganizationChart";
 import EmployeeManagement from "./pages/EmployeeManagement";
 import EditVersion from "./pages/EditVersion";
 import NewEmployee from "./pages/NewEmployee";
+import EditEmployee from "./pages/EditEmployee";
 
 const client = new ApolloClient({
   uri: `${import.meta.env.VITE_BACKEND_URL}/query`,
@@ -28,6 +29,7 @@ function App() {
           <Route path="/version/new" element={<NewVersion />} />
           <Route path="/department" element={<DepartmentManagement />} />
           <Route path="/employee" element={<EmployeeManagement />} />
+          <Route path="/employee/:id" element={<EditEmployee />} />
           <Route path="/employee/new" element={<NewEmployee />} />
           <Route path="/orgchart" element={<OrganizationChart />} />
           <Route path="/test" element={<ApiTest />} />

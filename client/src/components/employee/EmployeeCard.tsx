@@ -1,12 +1,20 @@
 import { Employee } from "@/types/employee";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   employee: Employee;
+  versionId: number;
 };
 
-const EmployeeCard = ({ employee }: Props) => {
+const EmployeeCard = ({ employee, versionId }: Props) => {
+  const navigate = useNavigate();
+
+  const handleEdit = () => {
+    navigate(`/employee/${employee.id}`, { state: { versionId } });
+  };
+
   return (
-    <div className="card bg-base-100 shadow-xl">
+    <div className="card bg-base-100 shadow-xl" onClick={handleEdit}>
       <figure className="px-10 pt-10">
         <svg
           xmlns="http://www.w3.org/2000/svg"
