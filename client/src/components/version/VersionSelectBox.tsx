@@ -8,9 +8,10 @@ type props = {
       React.SetStateAction<number | undefined>
     >;
   };
+  isDisabled?: boolean;
 };
 
-const VersionSelectBox = ({ versions, state }: props) => {
+const VersionSelectBox = ({ versions, state, isDisabled = false }: props) => {
   const { selectedVersionId, setSelectedVersionId } = { ...state };
   const handleSelectVersionChange = (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -23,6 +24,7 @@ const VersionSelectBox = ({ versions, state }: props) => {
       onChange={handleSelectVersionChange}
       className="select select-bordered font-normal"
       value={selectedVersionId}
+      disabled={isDisabled}
     >
       {versions?.map((version) => (
         <option key={version.id} value={version.id}>

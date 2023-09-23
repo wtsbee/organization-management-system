@@ -25,7 +25,7 @@ const NewEmployee = () => {
 
   const navigate = useNavigate();
 
-  // APIから部署一覧データを取得
+  // APIからバージョン一覧データを取得
   const {
     data: versionData,
     error: versionError,
@@ -47,6 +47,7 @@ const NewEmployee = () => {
     }
   }, [versionLoading, versionData, currentVersion]);
 
+  // APIから部署一覧データを取得
   const { data, error, loading } = useQuery<{
     getDepartmentTree: DepartmentTree[];
   }>(GET_DEPARTMENT_TREE, {
