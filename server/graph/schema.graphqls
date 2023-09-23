@@ -38,6 +38,14 @@ type Employee {
   updatedAt: DateTime!
 }
 
+type EmployeeWithDepartmentInfo {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  departmentId: ID!
+  departmentInfo: String!
+}
+
 type ResponseVersion {
   id: ID!
   name: String!
@@ -62,7 +70,7 @@ type Query {
   todos: [Todo!]!
   getDepartments(id: ID!): [Department!]
   getDepartmentTree(id: ID!): [DepartmentTree!]!
-  getEmployee(id: ID!): Employee!
+  getEmployee(id: ID!): EmployeeWithDepartmentInfo!
   getEmployees(id: ID!): [Employee!]
   getVersion(id: ID!): Version!
   getVersions: [ResponseVersion!]!

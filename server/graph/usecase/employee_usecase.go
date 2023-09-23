@@ -1,25 +1,28 @@
 package usecase
 
 import (
+	"fmt"
 	"log"
 	"my_package/graph/model"
 	"my_package/graph/repository"
+	"strconv"
 )
 
 // インターフェース
 type IEmployeeUsecase interface {
 	CreateEmployee(employee model.NewEmployee) (*model.Employee, error)
-	GetEmployee(employeeId uint) (*model.Employee, error)
+	GetEmployee(employeeId uint) (*model.EmployeeWithDepartmentInfo, error)
 	GetEmployees(departmentId uint) ([]*model.Employee, error)
 }
 
 type employeeUsecase struct {
 	er repository.IEmployeeRepository
+	dr repository.IDepartmentRepository
 }
 
 // コンストラクタ
-func NewEmployeeUsecase(er repository.IEmployeeRepository) IEmployeeUsecase {
-	return &employeeUsecase{er}
+func NewEmployeeUsecase(er repository.IEmployeeRepository, dr repository.IDepartmentRepository) IEmployeeUsecase {
+	return &employeeUsecase{er, dr}
 }
 
 func (er *employeeUsecase) CreateEmployee(employee model.NewEmployee) (*model.Employee, error) {
@@ -32,14 +35,26 @@ func (er *employeeUsecase) CreateEmployee(employee model.NewEmployee) (*model.Em
 	return &newEmployee, nil
 }
 
-func (eu *employeeUsecase) GetEmployee(employeeId uint) (*model.Employee, error) {
+func (eu *employeeUsecase) GetEmployee(employeeId uint) (*model.EmployeeWithDepartmentInfo, error) {
 	employee := model.Employee{}
 	if err := eu.er.GetEmployee(&employee, employeeId); err != nil {
 		log.Println("GetEmployee error", err)
-		return &model.Employee{}, err
+		return &model.EmployeeWithDepartmentInfo{}, err
+	}
+	department := model.Department{}
+	if err := eu.dr.GetDepartmentById(&department, employee.DepartmentId); err != nil {
+		log.Println("GetEmployee error", err)
+		return &model.EmployeeWithDepartmentInfo{}, err
+	}
+	employeeWithDepartmentInfo := model.EmployeeWithDepartmentInfo{
+		ID:             employee.ID,
+		FirstName:      employee.FirstName,
+		LastName:       employee.LastName,
+		DepartmentID:   employee.DepartmentId,
+		DepartmentInfo: fmt.Sprintf("%s/%v", department.Ancestry, strconv.Itoa(int(department.ID))),
 	}
 	log.Println("GetEmployee success")
-	return &employee, nil
+	return &employeeWithDepartmentInfo, nil
 }
 
 func (eu *employeeUsecase) GetEmployees(departmentId uint) ([]*model.Employee, error) {

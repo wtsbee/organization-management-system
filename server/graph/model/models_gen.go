@@ -6,6 +6,14 @@ import (
 	"time"
 )
 
+type EmployeeWithDepartmentInfo struct {
+	ID             uint   `json:"id"`
+	FirstName      string `json:"firstName"`
+	LastName       string `json:"lastName"`
+	DepartmentID   uint   `json:"departmentId"`
+	DepartmentInfo string `json:"departmentInfo"`
+}
+
 type NewDepartment struct {
 	Name      string `json:"name"`
 	Code      string `json:"code"`

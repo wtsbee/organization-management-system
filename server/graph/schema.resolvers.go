@@ -80,7 +80,7 @@ func (r *queryResolver) GetDepartmentTree(ctx context.Context, id uint) ([]*mode
 }
 
 // GetEmployee is the resolver for the getEmployee field.
-func (r *queryResolver) GetEmployee(ctx context.Context, id uint) (*model.Employee, error) {
+func (r *queryResolver) GetEmployee(ctx context.Context, id uint) (*model.EmployeeWithDepartmentInfo, error) {
 	return r.eu.GetEmployee(id)
 }
 

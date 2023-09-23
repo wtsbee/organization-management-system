@@ -18,7 +18,7 @@ func main() {
 	employeeRepository := repository.NewEmployeeRepository(db)
 	versionUsecase := usecase.NewVersionUsecase(versionRepository)
 	departmentUsecase := usecase.NewDepartmentUsecase(departmentRepository)
-	employeeUsecase := usecase.NewEmployeeUsecase(employeeRepository)
+	employeeUsecase := usecase.NewEmployeeUsecase(employeeRepository, departmentRepository)
 	resolver := graph.NewResolver(versionUsecase, departmentUsecase, employeeUsecase)
 
 	e := router.Init(resolver)
