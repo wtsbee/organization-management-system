@@ -9,6 +9,7 @@ import (
 // インターフェース
 type IEmployeeUsecase interface {
 	CreateEmployee(employee model.NewEmployee) (*model.Employee, error)
+	GetEmployee(employeeId uint) (*model.Employee, error)
 	GetEmployees(departmentId uint) ([]*model.Employee, error)
 }
 
@@ -30,6 +31,17 @@ func (er *employeeUsecase) CreateEmployee(employee model.NewEmployee) (*model.Em
 	log.Println("CreateEmployee success")
 	return &newEmployee, nil
 }
+
+func (eu *employeeUsecase) GetEmployee(employeeId uint) (*model.Employee, error) {
+	employee := model.Employee{}
+	if err := eu.er.GetEmployee(&employee, employeeId); err != nil {
+		log.Println("GetEmployee error", err)
+		return &model.Employee{}, err
+	}
+	log.Println("GetEmployee success")
+	return &employee, nil
+}
+
 func (eu *employeeUsecase) GetEmployees(departmentId uint) ([]*model.Employee, error) {
 	employees := []*model.Employee{}
 	if err := eu.er.GetEmployeesByDepartmentId(&employees, departmentId); err != nil {

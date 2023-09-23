@@ -62,6 +62,7 @@ type Query {
   todos: [Todo!]!
   getDepartments(id: ID!): [Department!]
   getDepartmentTree(id: ID!): [DepartmentTree!]!
+  getEmployee(id: ID!): Employee!
   getEmployees(id: ID!): [Employee!]
   getVersion(id: ID!): Version!
   getVersions: [ResponseVersion!]!

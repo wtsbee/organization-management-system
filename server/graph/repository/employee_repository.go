@@ -11,6 +11,7 @@ import (
 type IEmployeeRepository interface {
 	CreateEmployee(employee *model.Employee) error
 	GetEmployeesByDepartmentId(Employees *[]*model.Employee, departmentId uint) error
+	GetEmployee(employee *model.Employee, employeeId uint) error
 }
 
 type employeeRepository struct {
@@ -24,6 +25,14 @@ func NewEmployeeRepository(db *gorm.DB) IEmployeeRepository {
 
 func (er *employeeRepository) CreateEmployee(employee *model.Employee) error {
 	if err := er.db.Create(employee).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (er *employeeRepository) GetEmployee(employee *model.Employee, employeeId uint) error {
+	err := er.db.Find(employee, employeeId).Error
+	if err != nil {
 		return err
 	}
 	return nil
