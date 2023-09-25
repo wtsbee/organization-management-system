@@ -51,6 +51,13 @@ type UpdateDepartment struct {
 	Ancestry string `json:"ancestry"`
 }
 
+type UpdateEmployee struct {
+	ID           uint   `json:"id"`
+	FirstName    string `json:"firstName"`
+	LastName     string `json:"lastName"`
+	DepartmentID uint   `json:"departmentId"`
+}
+
 type UpdateVersion struct {
 	ID        uint      `json:"id"`
 	Name      string    `json:"name"`

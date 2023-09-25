@@ -59,6 +59,11 @@ func (r *mutationResolver) UpdateDepartment(ctx context.Context, input model.Upd
 	return r.du.UpdateDepartment(input)
 }
 
+// UpdateEmployee is the resolver for the updateEmployee field.
+func (r *mutationResolver) UpdateEmployee(ctx context.Context, input model.UpdateEmployee) (*model.Employee, error) {
+	return r.eu.UpdateEmployee(input)
+}
+
 // UpdateVersion is the resolver for the updateVersion field.
 func (r *mutationResolver) UpdateVersion(ctx context.Context, input model.UpdateVersion) (*model.Version, error) {
 	return r.vu.UpdateVersion(input)

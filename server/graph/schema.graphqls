@@ -106,6 +106,13 @@ input UpdateDepartment {
   ancestry: String!
 }
 
+input UpdateEmployee {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  departmentId: ID!
+}
+
 input UpdateVersion {
   id: ID!
   name: String!
@@ -120,5 +127,6 @@ type Mutation {
   deleteDepartment(id: ID!): Boolean!
   deleteVersion(id: ID!): Boolean!
   updateDepartment(input: UpdateDepartment!): Department!
+  updateEmployee(input: UpdateEmployee!): Employee!
   updateVersion(input: UpdateVersion!): Version!
 }

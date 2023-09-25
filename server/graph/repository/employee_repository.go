@@ -12,6 +12,7 @@ type IEmployeeRepository interface {
 	CreateEmployee(employee *model.Employee) error
 	GetEmployeesByDepartmentId(Employees *[]*model.Employee, departmentId uint) error
 	GetEmployee(employee *model.Employee, employeeId uint) error
+	UpdateEmployee(employee *model.Employee, employeeId uint) error
 }
 
 type employeeRepository struct {
@@ -50,6 +51,14 @@ func (er *employeeRepository) GetEmployeesByDepartmentId(employees *[]*model.Emp
 		departmentIdList = append(departmentIdList, v.ID)
 	}
 	err = er.db.Where("department_id in ?", departmentIdList).Find(employees).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (er *employeeRepository) UpdateEmployee(employee *model.Employee, employeeId uint) error {
+	err := er.db.Table("employees").Where("id=?", employeeId).Updates(employee).Error
 	if err != nil {
 		return err
 	}

@@ -13,6 +13,7 @@ type IEmployeeUsecase interface {
 	CreateEmployee(employee model.NewEmployee) (*model.Employee, error)
 	GetEmployee(employeeId uint) (*model.EmployeeWithDepartmentInfo, error)
 	GetEmployees(departmentId uint) ([]*model.Employee, error)
+	UpdateEmployee(employee model.UpdateEmployee) (*model.Employee, error)
 }
 
 type employeeUsecase struct {
@@ -65,4 +66,14 @@ func (eu *employeeUsecase) GetEmployees(departmentId uint) ([]*model.Employee, e
 	}
 	log.Println("GetEmployees success")
 	return employees, nil
+}
+
+func (eu *employeeUsecase) UpdateEmployee(employee model.UpdateEmployee) (*model.Employee, error) {
+	newEmployee := model.Employee{ID: employee.ID, FirstName: employee.FirstName, LastName: employee.LastName, DepartmentId: employee.DepartmentID}
+	if err := eu.er.UpdateEmployee(&newEmployee, employee.ID); err != nil {
+		log.Println("UpdateEmployee error", err)
+		return &model.Employee{}, err
+	}
+	log.Println("UpdateEmployee success")
+	return &newEmployee, nil
 }
