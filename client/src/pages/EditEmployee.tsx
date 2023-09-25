@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
-import { useQuery } from "@apollo/client";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useMutation, useQuery } from "@apollo/client";
 import VersionSelectBox from "@/components/version/VersionSelectBox";
 import { DepartmentOptions } from "@/functions/department.ts";
+import { UPDATE_EMPLOYEE } from "@/mutations/employeeMutations";
 import { GET_DEPARTMENT_TREE } from "@/queries/departmentQueries";
 import { GET_EMPLOYEE } from "@/queries/employeeQueries";
 import { GET_VERSIONS } from "@/queries/versionQueries";
@@ -13,10 +14,13 @@ import { Version } from "@/types/version";
 const EditEmployee = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [selectedDepartmentId, setSelectedDepartmentId] = useState<number>(0);
   const [selectedDepartmentAncestry, setSelectedDepartmentAncestry] =
     useState("");
   const [selectedVersionId, setSelectedVersionId] = useState<number>();
   const { state } = useLocation();
+
+  const navigate = useNavigate();
 
   const versionId = state?.versionId;
 
@@ -98,7 +102,30 @@ const EditEmployee = () => {
     setLastName(e.target.value);
   };
 
-  const onUpdate = async () => {};
+  const [updateEmployee] = useMutation(UPDATE_EMPLOYEE);
+
+  const onUpdate = async () => {
+    await updateEmployee({
+      variables: {
+        input: {
+          id,
+          firstName,
+          lastName,
+          departmentId: selectedDepartmentId,
+        },
+      },
+    });
+    navigate("/employee");
+  };
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = e.target.value;
+    const ancestryAndDepartmentId = selectedValue.split("/");
+    const departmentId =
+      ancestryAndDepartmentId[ancestryAndDepartmentId.length - 1];
+    setSelectedDepartmentId(parseInt(departmentId));
+    setSelectedDepartmentAncestry(e.target.value);
+  };
 
   const generateAncestry = (department: SelectListType): string => {
     const ancestry = !department.ancestry
@@ -160,6 +187,7 @@ const EditEmployee = () => {
                 <span>この部署の配下に所属</span>
               </label>
               <select
+                onChange={handleSelectChange}
                 className="select select-bordered font-normal"
                 value={selectedDepartmentAncestry}
               >
