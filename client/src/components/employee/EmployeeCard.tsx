@@ -14,7 +14,10 @@ const EmployeeCard = ({ employee, versionId }: Props) => {
   };
 
   return (
-    <div className="card bg-base-100 shadow-xl" onClick={handleEdit}>
+    <div
+      className="card bg-base-100 shadow-xl cursor-pointer"
+      onClick={handleEdit}
+    >
       <figure className="px-10 pt-10">
         <svg
           xmlns="http://www.w3.org/2000/svg"
