@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import { useMutation } from "@apollo/client";
 import { DepartmentOptions } from "@/functions/department.ts";
 import {
@@ -92,13 +93,23 @@ const DpartmentInputForm = ({
   };
 
   const handleDeletion = async () => {
-    await deleteDepartment({
-      variables: {
-        id: selectedDepartmentId,
-      },
+    Swal.fire({
+      title: "本当に削除しますか？",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "OK",
+      cancelButtonText: "キャンセル",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await deleteDepartment({
+          variables: {
+            id: selectedDepartmentId,
+          },
+        });
+        resetInputForm();
+        refetch();
+      }
     });
-    resetInputForm();
-    refetch();
   };
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

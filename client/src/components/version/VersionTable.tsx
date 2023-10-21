@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import {
   ApolloQueryResult,
   OperationVariables,
@@ -22,14 +23,24 @@ const VersionTable = ({ versions, refetch }: Props) => {
 
   const [deleteVersion] = useMutation(DELETE_VERSION);
 
-  const onDelete = async (id: number) => {
-    await deleteVersion({
-      variables: {
-        id,
-      },
+  const onDelete = (id: number) => {
+    Swal.fire({
+      title: "本当に削除しますか？",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "OK",
+      cancelButtonText: "キャンセル",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await deleteVersion({
+          variables: {
+            id,
+          },
+        });
+        navigate("/");
+        refetch();
+      }
     });
-    navigate("/");
-    refetch();
   };
 
   return (
