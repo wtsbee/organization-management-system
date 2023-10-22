@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 import { useMutation, useQuery } from "@apollo/client";
 import VersionSelectBox from "@/components/version/VersionSelectBox";
 import { DepartmentOptions } from "@/functions/department.ts";
-import { UPDATE_EMPLOYEE } from "@/mutations/employeeMutations";
+import {
+  DELETE_EMPLOYEE,
+  UPDATE_EMPLOYEE,
+} from "@/mutations/employeeMutations";
 import { GET_DEPARTMENT_TREE } from "@/queries/departmentQueries";
 import { GET_EMPLOYEE } from "@/queries/employeeQueries";
 import { GET_VERSIONS } from "@/queries/versionQueries";
@@ -19,6 +23,7 @@ const EditEmployee = () => {
     useState("");
   const [selectedVersionId, setSelectedVersionId] = useState<number>();
   const { state } = useLocation();
+  const [deleteEmployee] = useMutation(DELETE_EMPLOYEE);
 
   const navigate = useNavigate();
 
@@ -127,6 +132,25 @@ const EditEmployee = () => {
     setSelectedDepartmentAncestry(e.target.value);
   };
 
+  const handleDeletion = async () => {
+    Swal.fire({
+      title: "本当に削除しますか？",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "OK",
+      cancelButtonText: "キャンセル",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await deleteEmployee({
+          variables: {
+            id,
+          },
+        });
+        navigate("/employee");
+      }
+    });
+  };
+
   const generateAncestry = (department: SelectListType): string => {
     const ancestry = !department.ancestry
       ? department.id.toString()
@@ -205,8 +229,14 @@ const EditEmployee = () => {
               </select>
             </div>
             <div className="mt-5">
-              <button className="btn btn-primary" onClick={onUpdate}>
+              <button className="btn btn-primary mr-1" onClick={onUpdate}>
                 更新
+              </button>
+              <button
+                className="btn btn-outline  bg-red-300 hover:bg-red-500"
+                onClick={handleDeletion}
+              >
+                削除
               </button>
             </div>
           </>
