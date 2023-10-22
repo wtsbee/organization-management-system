@@ -11,6 +11,7 @@ import (
 // インターフェース
 type IEmployeeUsecase interface {
 	CreateEmployee(employee model.NewEmployee) (*model.Employee, error)
+	DeleteEemployee(id uint) (bool, error)
 	GetEmployee(employeeId uint) (*model.EmployeeWithDepartmentInfo, error)
 	GetEmployees(departmentId uint) ([]*model.Employee, error)
 	UpdateEmployee(employee model.UpdateEmployee) (*model.Employee, error)
@@ -34,6 +35,15 @@ func (er *employeeUsecase) CreateEmployee(employee model.NewEmployee) (*model.Em
 	}
 	log.Println("CreateEmployee success")
 	return &newEmployee, nil
+}
+
+func (er *employeeUsecase) DeleteEemployee(id uint) (bool, error) {
+	if err := er.er.DeleteEemployee(id); err != nil {
+		log.Println("DeleteEemployee error", err)
+		return false, err
+	}
+	log.Println("DeleteEemployee success")
+	return true, nil
 }
 
 func (eu *employeeUsecase) GetEmployee(employeeId uint) (*model.EmployeeWithDepartmentInfo, error) {

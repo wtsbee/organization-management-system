@@ -125,6 +125,7 @@ type Mutation {
   createEmployee(input: NewEmployee!): Employee!
   createVersion(input: NewVersion!): Version!
   deleteDepartment(id: ID!): Boolean!
+  deleteEmployee(id: ID!): Boolean!
   deleteVersion(id: ID!): Boolean!
   updateDepartment(input: UpdateDepartment!): Department!
   updateEmployee(input: UpdateEmployee!): Employee!

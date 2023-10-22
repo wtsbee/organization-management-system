@@ -10,6 +10,7 @@ import (
 // インターフェース
 type IEmployeeRepository interface {
 	CreateEmployee(employee *model.Employee) error
+	DeleteEemployee(id uint) error
 	GetEmployeesByDepartmentId(Employees *[]*model.Employee, departmentId uint) error
 	GetEmployee(employee *model.Employee, employeeId uint) error
 	UpdateEmployee(employee *model.Employee, employeeId uint) error
@@ -26,6 +27,14 @@ func NewEmployeeRepository(db *gorm.DB) IEmployeeRepository {
 
 func (er *employeeRepository) CreateEmployee(employee *model.Employee) error {
 	if err := er.db.Create(employee).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (er *employeeRepository) DeleteEemployee(id uint) error {
+	err := er.db.Delete(&model.Employee{}, id).Error
+	if err != nil {
 		return err
 	}
 	return nil

@@ -49,6 +49,11 @@ func (r *mutationResolver) DeleteDepartment(ctx context.Context, id uint) (bool,
 	return r.du.DeleteDepartment(id)
 }
 
+// DeleteEmployee is the resolver for the deleteEmployee field.
+func (r *mutationResolver) DeleteEmployee(ctx context.Context, id uint) (bool, error) {
+	return r.eu.DeleteEemployee(id)
+}
+
 // DeleteVersion is the resolver for the deleteVersion field.
 func (r *mutationResolver) DeleteVersion(ctx context.Context, id uint) (bool, error) {
 	return r.vu.DeleteVersion(id)
